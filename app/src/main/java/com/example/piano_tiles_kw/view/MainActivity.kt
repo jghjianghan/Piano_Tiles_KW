@@ -18,11 +18,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         vm = ViewModelProvider(this).get(MainVM::class.java)
-        vm.getContoh().observe(this, {
-            binding.tv.text = it
-        })
-
-        binding.actionBtn.setOnClickListener { vm.setContoh("clicked") }
+//        vm.getContoh().observe(this, {
+//            binding.tv.text = it
+//        })
+//
+//        binding.actionBtn.setOnClickListener { vm.setContoh("clicked") }
         binding.nextBtn.setOnClickListener {
             val ft = supportFragmentManager.beginTransaction()
             ft.replace(R.id.fragment_container, ContohFragment.newInstance())
