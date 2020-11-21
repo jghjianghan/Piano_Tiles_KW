@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.piano_tiles_kw.model.GameMode
-import com.example.piano_tiles_kw.model.Page
 
 /**
  * Class that manages view model, this class extends class ViewModel. This class contains all live data needed in the game.
@@ -17,14 +16,6 @@ class MainVM: ViewModel() {
         gameMode.value = newMode
     }
     // end of gameMode
-
-    // page
-    private val page = MutableLiveData<Page>()
-    fun getPage():LiveData<Page> = page
-    fun setPage(newPage : Page) {
-        page.value = newPage
-    }
-    // end of page
 
     // highScore
     private val highScore = MutableLiveData<Int>()
@@ -44,7 +35,6 @@ class MainVM: ViewModel() {
     // end of toolbarTitle
 
     init {
-        page.value = Page.HOME
         highScore.value = 0
         // TODO -> set highScore dari memory ?
     }

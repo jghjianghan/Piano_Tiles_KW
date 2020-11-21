@@ -12,9 +12,10 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.piano_tiles_kw.databinding.FragmentDescriptionBinding
 import com.example.piano_tiles_kw.databinding.FragmentResultBinding
+import com.example.piano_tiles_kw.model.Page
 
 class ResultFragment : Fragment(),
-    View.OnClickListener, OnTouchListener {
+    View.OnClickListener{
     private lateinit var listener: FragmentListener
     private lateinit var binding : FragmentResultBinding
 
@@ -45,14 +46,10 @@ class ResultFragment : Fragment(),
 
     override fun onClick(v: View) {
         if (binding.btnAgain == v) {
-            listener.changePage(2)
+            listener.changePage(Page.GAMEPLAY)
         } else if (binding.btnMenu == v) {
-            listener.changePage(1)
+            listener.changePage(Page.MENU)
         }
-    }
-
-    override fun onTouch(v: View, event: MotionEvent): Boolean {
-        return false
     }
 
     companion object {

@@ -6,11 +6,12 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import com.example.piano_tiles_kw.R
 import com.example.piano_tiles_kw.databinding.ActivityMainBinding
+import com.example.piano_tiles_kw.model.Page
 import com.example.piano_tiles_kw.view.MenuFragment.Companion.newInstance
 import com.example.piano_tiles_kw.viewmodel.MainVM
 
 class MainActivity : AppCompatActivity(), FragmentListener {
-    private lateinit var vm: MainVM
+    private lateinit var viewModel: MainVM
     private lateinit var menuFragment: MenuFragment
     private lateinit var descriptionFragment: DescriptionFragment
     private lateinit var gameplayFragment: GameplayFragment
@@ -28,57 +29,32 @@ class MainActivity : AppCompatActivity(), FragmentListener {
         gameplayFragment = GameplayFragment()
         resultFragment = ResultFragment()
 
-        vm = ViewModelProvider(this).get(MainVM::class.java)
-        changePage(4)
+        viewModel = ViewModelProvider(this).get(MainVM::class.java)
+        changePage(Page.MENU)
     }
 
-    override fun changePage(page: Int) {
+    override fun changePage(p : Page) {
         val ft = fragmentManager.beginTransaction()
-        if (page == 1) {
-            if (menuFragment.isAdded) {
-                ft.show(menuFragment)
-            } else {
-                ft.add(R.id.fragment_container, menuFragment)
+        when(p) {
+            Page.MENU -> {
+                ft.replace(R.id.fragment_container, menuFragment)
             }
-            if (descriptionFragment.isAdded) {
-                ft.hide(descriptionFragment)
+
+            Page.DESCRIPTION -> {
+                ft.replace(R.id.fragment_container, descriptionFragment).addToBackStack(null)
             }
-            if (resultFragment.isAdded) {
-                ft.hide(resultFragment)
+
+            Page.GAMEPLAY -> {
+                ft.replace(R.id.fragment_container, gameplayFragment)
             }
-        } else if (page == 2) {
-            if (descriptionFragment.isAdded) {
-                ft.show(descriptionFragment)
-            } else {
-                ft.add(R.id.fragment_container, descriptionFragment)
-            }
-            if (menuFragment.isAdded) {
-                ft.hide(menuFragment)
-            }
-            if (resultFragment.isAdded) {
-                ft.hide(resultFragment)
-            }
-        } else if (page == 3) {
-            if (gameplayFragment.isAdded) {
-                ft.show(gameplayFragment)
-            } else {
-                ft.add(R.id.fragment_container, gameplayFragment)
-            }
-            if (descriptionFragment.isAdded) {
-                ft.hide(descriptionFragment)
-            }
-        } else if (page == 4) {
-            if (resultFragment.isAdded) {
-                ft.show(resultFragment)
-            } else {
-                ft.add(R.id.fragment_container, resultFragment)
-            }
-            if (gameplayFragment.isAdded) {
-                ft.hide(gameplayFragment)
+
+            Page.RESULT -> {
+                ft.replace(R.id.fragment_container, resultFragment)
             }
         }
         ft.commit()
     }
+
 
     override fun closeApplication() {
         moveTaskToBack(true)

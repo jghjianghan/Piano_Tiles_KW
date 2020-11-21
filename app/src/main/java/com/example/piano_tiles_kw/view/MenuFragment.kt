@@ -11,13 +11,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.piano_tiles_kw.R
 import com.example.piano_tiles_kw.databinding.FragmentMenuBinding
+import com.example.piano_tiles_kw.model.Page
 
 class MenuFragment : Fragment(),
-    View.OnClickListener, OnTouchListener {
+    View.OnClickListener {
     private lateinit var listener: FragmentListener
     private lateinit var binding: FragmentMenuBinding
 
-    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -50,21 +50,16 @@ class MenuFragment : Fragment(),
     }
 
     override fun onClick(v: View) {
-        if (binding.btnClassic === v) {
-            listener.changePage(2)
-        } else if (binding.btnArcade === v) {
-            listener.changePage(2)
-        } else if (binding.btnTilt === v) {
-            listener.changePage(2)
-        } else if (binding.btnExit === v) {
+        if (binding.btnClassic == v) {
+            listener.changePage(Page.DESCRIPTION)
+        } else if (binding.btnArcade == v) {
+            listener.changePage(Page.DESCRIPTION)
+        } else if (binding.btnTilt == v) {
+            listener.changePage(Page.DESCRIPTION)
+        } else if (binding.btnExit == v) {
             listener.closeApplication()
         }
     }
-
-    override fun onTouch(v: View, event: MotionEvent): Boolean {
-        return false
-    }
-
     companion object {
         fun newInstance(title: String?): MenuFragment {
             val fragment = MenuFragment()

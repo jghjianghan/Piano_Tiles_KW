@@ -7,9 +7,10 @@ import android.view.View.OnTouchListener
 import androidx.fragment.app.Fragment
 import com.example.piano_tiles_kw.databinding.FragmentGameplayBinding
 import com.example.piano_tiles_kw.model.ClassicGameEngine
+import com.example.piano_tiles_kw.model.Page
 
 class GameplayFragment : Fragment(),
-    View.OnClickListener, OnTouchListener {
+    View.OnClickListener{
     private lateinit var listener: FragmentListener
     private lateinit var binding : FragmentGameplayBinding
     private lateinit var engineClassic : ClassicGameEngine
@@ -25,6 +26,8 @@ class GameplayFragment : Fragment(),
                 engineClassic = ClassicGameEngine(requireActivity(), binding.ivCanvas)
             }
         }
+
+        binding.btnTemp.setOnClickListener(this)
         return binding.root
     }
 
@@ -43,11 +46,9 @@ class GameplayFragment : Fragment(),
     }
 
     override fun onClick(v: View) {
-
-    }
-
-    override fun onTouch(v: View, event: MotionEvent): Boolean {
-        return false
+        if(v == binding.btnTemp) {
+            listener.changePage(Page.RESULT)
+        }
     }
 
     companion object {

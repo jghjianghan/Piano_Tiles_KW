@@ -10,9 +10,10 @@ import android.view.View.OnTouchListener
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.piano_tiles_kw.databinding.FragmentDescriptionBinding
+import com.example.piano_tiles_kw.model.Page
 
 class DescriptionFragment : Fragment(),
-    View.OnClickListener, OnTouchListener {
+    View.OnClickListener{
     private lateinit var listener: FragmentListener
     private lateinit var binding : FragmentDescriptionBinding
     @SuppressLint("ClickableViewAccessibility")
@@ -43,14 +44,10 @@ class DescriptionFragment : Fragment(),
 
     override fun onClick(v: View) {
         if (binding.btnStart == v) {
-            listener.changePage(3)
+            listener.changePage(Page.GAMEPLAY)
         } else if (binding.btnCancel == v) {
-            listener.changePage(1)
+            listener.changePage(Page.MENU)
         }
-    }
-
-    override fun onTouch(v: View, event: MotionEvent): Boolean {
-        return false
     }
 
     companion object {
