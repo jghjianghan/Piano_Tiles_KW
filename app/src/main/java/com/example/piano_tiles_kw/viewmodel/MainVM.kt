@@ -3,6 +3,7 @@ package com.example.piano_tiles_kw.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.piano_tiles_kw.model.GameMode
 import com.example.piano_tiles_kw.model.Page
 
 /**
@@ -10,9 +11,9 @@ import com.example.piano_tiles_kw.model.Page
  */
 class MainVM: ViewModel() {
     // gameMode
-    private val gameMode = MutableLiveData<String>()
-    fun getGameMode():LiveData<String> = gameMode
-    fun setGameMode(newMode : String) {
+    private val gameMode = MutableLiveData<GameMode>()
+    fun getGameMode():LiveData<GameMode> = gameMode
+    fun setGameMode(newMode : GameMode) {
         gameMode.value = newMode
     }
     // end of gameMode
