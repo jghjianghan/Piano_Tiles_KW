@@ -1,33 +1,31 @@
 package com.example.piano_tiles_kw.view
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
 import android.os.Bundle
 import android.view.*
 import android.view.View.OnTouchListener
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
-import com.example.piano_tiles_kw.R
-import com.example.piano_tiles_kw.databinding.FragmentDescriptionBinding
+import com.example.piano_tiles_kw.databinding.FragmentGameplayBinding
+import com.example.piano_tiles_kw.model.ClassicGameEngine
 
 class GameplayFragment : Fragment(),
     View.OnClickListener, OnTouchListener {
     private lateinit var listener: FragmentListener
-    private lateinit var binding : FragmentDescriptionBinding
+    private lateinit var binding : FragmentGameplayBinding
+    private lateinit var engineClassic : ClassicGameEngine
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        return view
+        binding = FragmentGameplayBinding.inflate(inflater, container, false)
+        binding.ivCanvas.addOnLayoutChangeListener{ v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom->
+            if (binding.ivCanvas.width > 0 && binding.ivCanvas.height>0){
+                engineClassic = ClassicGameEngine(requireActivity(), binding.ivCanvas)
+            }
+        }
+        return binding.root
     }
 
 
