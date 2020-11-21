@@ -1,5 +1,20 @@
 <resources>
-    <string name="app_name">Piano_Tiles_KW</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="app_name">PIANO TILE SUPER</string>
+
+<!--    Buttons-->
+    <string name="btn_start_string">START</string>
+    <string name="btn_cancel_string">CANCEL</string>
+    <string name="btn_exit_string">EXIT</string>
+
+<!--    Modes-->
+    <string name="btn_classic_string">Classic</string>
+    <string name="btn_arcade_string">Arcade</string>
+    <string name="btn_tilt_string">Tilt</string>
+
+<!--    Text Views-->
+    <string name="tv_goals_title_string">Goals</string>
+    <string name="tv_goals_string">...</string>
+
+
+<!--    <string name=""></string>-->
 </resources>

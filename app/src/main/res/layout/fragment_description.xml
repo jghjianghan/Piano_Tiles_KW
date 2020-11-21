@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:backgroundTint="@color/colorBlack">
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/tv_goals"
+
+        android:text="@string/tv_goals_title_string"
+
+        android:layout_centerInParent="true"
+        android:layout_above="@id/tv_description"
+        />
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/tv_description"
+
+        android:text="@string/tv_goals_string"
+
+        android:layout_centerInParent="true"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_start"
+
+        android:text="@string/btn_start_string"
+
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/tv_description"
+        android:layout_toLeftOf="@+id/tv_empty"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_empty"
+
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/tv_description"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_cancel"
+
+        android:text="@string/btn_cancel_string"
+
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/tv_description"
+        android:layout_toRightOf="@+id/tv_empty"
+        />
+
+</RelativeLayout>

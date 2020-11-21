@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<!--    gameover-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_gameover"
+
+        android:text="Game Over"
+        android:textStyle="bold"
+        android:textSize="@android:dimen/app_icon_size"
+
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@android:dimen/app_icon_size"
+        />
+
+
+<!--    score-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="Score : "
+
+        android:layout_centerInParent="true"
+        android:layout_toLeftOf="@+id/tv_empty_score"
+        android:layout_above="@+id/tv_emptymid"
+        />
+
+    <TextView
+        android:layout_width="5dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_empty_score"
+
+        android:layout_centerInParent="true"
+        android:layout_above="@+id/tv_emptymid"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_res_score"
+
+        android:text="10"
+
+        android:layout_centerInParent="true"
+        android:layout_above="@+id/tv_emptymid"
+        android:layout_toRightOf="@id/tv_empty_score"
+        />
+
+
+<!--    highscore-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="Your High Score : "
+
+        android:layout_centerInParent="true"
+        android:layout_toLeftOf="@+id/tv_empty_highscore"
+        android:layout_below="@+id/tv_emptymid"
+        />
+
+    <TextView
+        android:layout_width="5dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_empty_highscore"
+
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/tv_emptymid"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_res_highscore"
+
+        android:text="20"
+        android:textAlignment="textEnd"
+
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/tv_emptymid"
+        android:layout_toRightOf="@id/tv_empty_highscore"
+        />
+
+
+<!--    buttons-->
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_again"
+
+        android:text="Play Again"
+        android:layout_centerInParent="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@android:dimen/app_icon_size"
+        android:layout_toLeftOf="@+id/tv_empty2"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_menu"
+
+        android:text="Main Menu"
+        android:layout_marginBottom="@android:dimen/app_icon_size"
+        android:layout_centerInParent="true"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@id/tv_empty2"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_empty2"
+
+        android:layout_centerInParent="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@android:dimen/app_icon_size"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_emptymid"
+
+        android:layout_centerInParent="true"
+        />
+
+</RelativeLayout>
