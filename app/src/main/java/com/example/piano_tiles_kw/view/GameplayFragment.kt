@@ -2,14 +2,11 @@ package com.example.piano_tiles_kw.view
 
 import android.content.Context
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.*
 import androidx.fragment.app.Fragment
-import com.example.piano_tiles_kw.R
 import com.example.piano_tiles_kw.databinding.FragmentGameplayBinding
 import com.example.piano_tiles_kw.model.Page
-import com.example.piano_tiles_kw.view.engines.ClassicGameEngine
+import com.example.piano_tiles_kw.view.engines.RainingGameEngine
 import com.example.piano_tiles_kw.view.engines.GameEngine
 
 class GameplayFragment : Fragment(),
@@ -27,7 +24,7 @@ class GameplayFragment : Fragment(),
         binding = FragmentGameplayBinding.inflate(inflater, container, false)
         binding.ivCanvas.addOnLayoutChangeListener{ _, _, _, _, _, _, _, _, _ ->
             if (binding.ivCanvas.width > 0 && binding.ivCanvas.height>0){
-                engine = ClassicGameEngine(requireActivity(), binding.ivCanvas)
+                engine = RainingGameEngine(requireActivity(), binding.ivCanvas)
                 engine.startGame()
             }
         }
