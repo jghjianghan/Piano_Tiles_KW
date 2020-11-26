@@ -2,18 +2,22 @@ package com.example.piano_tiles_kw.view
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.*
-import android.view.View.OnTouchListener
 import androidx.fragment.app.Fragment
+import com.example.piano_tiles_kw.R
 import com.example.piano_tiles_kw.databinding.FragmentGameplayBinding
-import com.example.piano_tiles_kw.model.ClassicGameEngine
 import com.example.piano_tiles_kw.model.Page
+import com.example.piano_tiles_kw.view.engines.ClassicGameEngine
+import com.example.piano_tiles_kw.view.engines.GameEngine
 
 class GameplayFragment : Fragment(),
     View.OnClickListener{
     private lateinit var listener: FragmentListener
     private lateinit var binding : FragmentGameplayBinding
-    private lateinit var engineClassic : ClassicGameEngine
+    private lateinit var engine : GameEngine
+//    private lateinit var handler: UIThreadWrapper
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -21,17 +25,16 @@ class GameplayFragment : Fragment(),
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentGameplayBinding.inflate(inflater, container, false)
-        binding.ivCanvas.addOnLayoutChangeListener{ v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom->
+        binding.ivCanvas.addOnLayoutChangeListener{ _, _, _, _, _, _, _, _, _ ->
             if (binding.ivCanvas.width > 0 && binding.ivCanvas.height>0){
-                engineClassic = ClassicGameEngine(requireActivity(), binding.ivCanvas)
+                engine = ClassicGameEngine(requireActivity(), binding.ivCanvas)
+                engine.startGame()
             }
         }
 
         binding.btnTemp.setOnClickListener(this)
         return binding.root
     }
-
-
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -49,6 +52,7 @@ class GameplayFragment : Fragment(),
         if(v == binding.btnTemp) {
             listener.changePage(Page.RESULT)
         }
+
     }
 
     companion object {

@@ -1,17 +1,16 @@
-package com.example.piano_tiles_kw.model
+package com.example.piano_tiles_kw.view.engines
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.os.Looper
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.widget.ImageView
-import androidx.core.content.res.ResourcesCompat
-import com.example.piano_tiles_kw.R
-import java.util.concurrent.ThreadLocalRandom
+import com.example.piano_tiles_kw.view.UIThreadWrapper
+import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * Manages a piano tile game in the given ImageView
@@ -23,10 +22,18 @@ class ClassicGameEngine (
     private val iv: ImageView,
     private var numberOfLanes:Int = 4
 ): GameEngine(context, iv), View.OnTouchListener {
-
+    val handler = UIThreadWrapper(this, Looper.getMainLooper())
     val laneWidth = (iv.width.toFloat()) / numberOfLanes
     val laneCenters = ArrayList<Float>()
-    val tiles = ArrayList<Tile>()
+    val orchestrator = TileOrchestrator(
+        handler,
+        laneCenters,
+        laneWidth,
+        2000,
+        10.toFloat(),
+        iv.height.toFloat(),
+        Color.BLACK
+    )
 
     init {
         iv.setOnTouchListener(this)
@@ -62,16 +69,15 @@ class ClassicGameEngine (
                 iv.height.toFloat(),
                 strokePaint)
         }
-
         iv.invalidate()
     }
 
     /**
      * Resets the canvas and then redraw all the elements (tiles)
      */
-    override fun redraw(){
+     override fun redraw(drawers: ArrayList<TileDrawer>){
         clearCanvas()
-        for (i in tiles){
+        for (i in drawers){
             i.drawTile(mCanvas)
         }
 
@@ -79,23 +85,20 @@ class ClassicGameEngine (
     }
 
     override fun startGame(){
-        println("starting")
-        tiles.clear()
-        for (i in laneCenters){
-            tiles.add(Tile(laneWidth, laneWidth*1.6f, i, 10f, Color.BLACK))
-        }
+        println("game started")
+        orchestrator.start()
     }
 
     override fun onTouch(v: View?, event: MotionEvent?): Boolean {
         val pointerIndex = event!!.actionIndex
-        when(event!!.actionMasked){
+        when(event.actionMasked){
             MotionEvent.ACTION_DOWN -> Log.d("touch_listener", "down ${event.getX(pointerIndex)}, ${event.getY(pointerIndex)}")
             MotionEvent.ACTION_POINTER_DOWN -> Log.d("touch_listener", "pointer_down ${event.getX(pointerIndex)}, ${event.getY(pointerIndex)}")
-            MotionEvent.ACTION_UP -> startGame()
+            MotionEvent.ACTION_UP -> orchestrator.stop()
 //            MotionEvent.ACTION_POINTER_UP -> Log.d("touch_listener", "pointer up")
 //            MotionEvent.ACTION_MOVE -> Log.d("touch_listener", "move")
-
         }
+
         return true
     }
 }

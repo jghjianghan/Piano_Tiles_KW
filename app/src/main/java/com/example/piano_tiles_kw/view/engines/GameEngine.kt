@@ -1,4 +1,4 @@
-package com.example.piano_tiles_kw.model
+package com.example.piano_tiles_kw.view.engines
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -49,7 +49,7 @@ abstract class GameEngine (private val context: Context, private val iv: ImageVi
     /**
      * Resets the canvas and then redraw all the elements (tiles)
      */
-    protected abstract fun redraw()
+    abstract fun redraw(drawers: ArrayList<TileDrawer>)
 
-    protected abstract fun startGame()
+    abstract fun startGame()
 }
