@@ -21,7 +21,6 @@ class TileOrchestrator(
     fun start() {
         println("orchestrator starting")
         spawner.start()
-        tiles.add(Tile(tileWidth, tileWidth*1.6f, laneCenters.random(), initSpeed, envHeight, tileColor))
         puller.start()
     }
 
@@ -34,7 +33,6 @@ class TileOrchestrator(
     ): Thread() {
         var stopFlag = false
         override fun run() {
-            Thread.sleep(delay)
             while (!stopFlag){
                 tiles.add(Tile(tileWidth, tileWidth*1.6f, laneCenters.random(), initSpeed, envHeight, tileColor))
                 Thread.sleep(delay)
@@ -47,13 +45,20 @@ class TileOrchestrator(
         override fun run() {
             while (!stopFlag){
                 val drawers = ArrayList<TileDrawer>()
-                for (tile in tiles){
-                    println("dropping")
+                val outTiles = ArrayList<Tile>()
+                val iter = tiles.iterator()
+                while (iter.hasNext()){
+                    val tile = iter.next()
                     tile.drop()
                     drawers.add(tile.Drawer())
+                    if (tile.isOut){
+                        outTiles.add(tile)
+                    }
                 }
+
+                tiles.removeAll(outTiles)
                 handler.redrawCanvas(drawers)
-                Thread.sleep(delay)
+                sleep(delay)
             }
         }
     }

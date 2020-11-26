@@ -14,7 +14,7 @@ class Tile(
     color: Int
 ) {
     var paint = Paint()
-    var cy = 0 - height/2
+    var cy = 0 - height
     var isOut = false
 
     init {
@@ -24,21 +24,19 @@ class Tile(
     fun drop() {
         if (!isOut){
             cy += dropSpeed
-            println("envHeight: $envHeight")
-            println("cy: ${cy - height/2}")
-            if (cy - height/2 >= envHeight){
+            if (cy > envHeight){
                 isOut = true
             }
         }
     }
 
     /**
-     * Draw itself on a canvas
-     * @param canvas The canvas where the tile will be drawn
+     * A class that draws this particular tile on the canvas
+     * Will be passed to the engine to draw in the UI Thread
      */
     inner class Drawer: TileDrawer() {
         override fun drawTile(canvas: Canvas) {
-            canvas.drawRect(cx-width/2, cy - height/2, cx+width/2, cy + height/2, paint)
+            canvas.drawRect(cx-width/2, cy, cx+width/2, cy + height, paint)
         }
     }
 }
