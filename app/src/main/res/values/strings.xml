@@ -24,7 +24,7 @@
 
 <!--    Description-->
     <string name="desc_classic">
-        The tiles will move as you tap the correct tile.
+        The tiles will move as you tap the correct one.
         Once you tap it wrong, the game will be over!
     </string>
     <string name="desc_arcade">

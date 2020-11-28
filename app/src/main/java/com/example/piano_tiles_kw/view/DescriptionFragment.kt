@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.piano_tiles_kw.R
 import com.example.piano_tiles_kw.databinding.FragmentDescriptionBinding
+import com.example.piano_tiles_kw.model.GameMode
 import com.example.piano_tiles_kw.model.Page
 import com.example.piano_tiles_kw.viewmodel.MainVM
 
@@ -37,9 +39,18 @@ class DescriptionFragment : Fragment(),
         vm = ViewModelProvider(requireActivity()).get(MainVM::class.java)
         vm.getGameMode().observe(this, {
             when(it){
-
+                GameMode.CLASSIC -> {
+                    binding.tvDescription.text = getString(R.string.desc_classic)
+                }
+                GameMode.ARCADE -> {
+                    binding.tvDescription.text = getString(R.string.desc_arcade)
+                }
+                GameMode.TILT -> {
+                    binding.tvDescription.text = getString(R.string.desc_tilt)
+                }
             }
         })
+
     }
 
     override fun onAttach(context: Context) {
