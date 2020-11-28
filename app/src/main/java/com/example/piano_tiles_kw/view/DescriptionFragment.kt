@@ -1,16 +1,15 @@
 package com.example.piano_tiles_kw.view
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
-import android.view.View.OnTouchListener
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.piano_tiles_kw.databinding.FragmentDescriptionBinding
 import com.example.piano_tiles_kw.model.Page
+import com.example.piano_tiles_kw.viewmodel.MainVM
 
 // Contains the description of each game modes before the game starts
 
@@ -18,6 +17,8 @@ class DescriptionFragment : Fragment(),
     View.OnClickListener{
     private lateinit var listener: FragmentListener
     private lateinit var binding : FragmentDescriptionBinding
+    private lateinit var vm : MainVM
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -29,6 +30,16 @@ class DescriptionFragment : Fragment(),
 
         binding.btnCancel.setOnClickListener(this)
         return binding.root
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        vm = ViewModelProvider(requireActivity()).get(MainVM::class.java)
+        vm.getGameMode().observe(this, {
+            when(it){
+
+            }
+        })
     }
 
     override fun onAttach(context: Context) {
