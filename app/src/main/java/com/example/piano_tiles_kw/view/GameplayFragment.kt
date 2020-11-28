@@ -6,7 +6,7 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import com.example.piano_tiles_kw.databinding.FragmentGameplayBinding
 import com.example.piano_tiles_kw.model.Page
-import com.example.piano_tiles_kw.view.engines.RainingGameEngine
+import com.example.piano_tiles_kw.view.engines.raining.RainingGameEngine
 import com.example.piano_tiles_kw.view.engines.GameEngine
 
 class GameplayFragment : Fragment(),

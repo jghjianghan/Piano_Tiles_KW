@@ -4,9 +4,7 @@ import android.os.Handler
 import android.os.Looper
 import android.os.Message
 import com.example.piano_tiles_kw.view.engines.GameEngine
-import com.example.piano_tiles_kw.view.engines.Tile
 import com.example.piano_tiles_kw.view.engines.TileDrawer
-import java.util.*
 import kotlin.collections.ArrayList
 
 @Suppress("UNCHECKED_CAST")

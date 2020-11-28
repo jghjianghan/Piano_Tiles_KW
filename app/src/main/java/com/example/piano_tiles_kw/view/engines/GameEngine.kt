@@ -52,4 +52,7 @@ abstract class GameEngine (private val context: Context, private val iv: ImageVi
     abstract fun redraw(drawers: ArrayList<TileDrawer>)
 
     abstract fun startGame()
+    abstract fun stopGame()
+
+    abstract fun getScore(): Int
 }
