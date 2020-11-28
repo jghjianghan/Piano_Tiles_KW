@@ -9,9 +9,12 @@ import android.view.View
 import android.view.View.OnTouchListener
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.piano_tiles_kw.R
 import com.example.piano_tiles_kw.databinding.FragmentMenuBinding
+import com.example.piano_tiles_kw.model.GameMode
 import com.example.piano_tiles_kw.model.Page
+import com.example.piano_tiles_kw.viewmodel.MainVM
 
 // Contains the main menu page to select game modes
 
@@ -19,6 +22,13 @@ class MenuFragment : Fragment(),
     View.OnClickListener {
     private lateinit var listener: FragmentListener
     private lateinit var binding: FragmentMenuBinding
+    private lateinit var vm: MainVM;
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        vm = ViewModelProvider(requireActivity()).get(MainVM::class.java)
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,10 +64,13 @@ class MenuFragment : Fragment(),
     override fun onClick(v: View) {
         if (binding.btnClassic == v) {
             listener.changePage(Page.DESCRIPTION)
+            vm.setGameMode(GameMode.CLASSIC)
         } else if (binding.btnArcade == v) {
             listener.changePage(Page.DESCRIPTION)
+            vm.setGameMode(GameMode.ARCADE)
         } else if (binding.btnTilt == v) {
             listener.changePage(Page.DESCRIPTION)
+            vm.setGameMode(GameMode.TILT)
         } else if (binding.btnExit == v) {
             listener.closeApplication()
         }
