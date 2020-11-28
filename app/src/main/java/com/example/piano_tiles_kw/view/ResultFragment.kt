@@ -14,6 +14,8 @@ import com.example.piano_tiles_kw.databinding.FragmentDescriptionBinding
 import com.example.piano_tiles_kw.databinding.FragmentResultBinding
 import com.example.piano_tiles_kw.model.Page
 
+// Contains the result page after the game is over
+
 class ResultFragment : Fragment(),
     View.OnClickListener{
     private lateinit var listener: FragmentListener

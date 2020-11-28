@@ -1,78 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <TextView
-        android:layout_height="wrap_content"
+        android:id="@+id/title"
         android:layout_width="wrap_content"
-
-        android:text="Select mode:"
-        android:textAlignment="center"
-        android:textSize="50dp"
-
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="100dp"
-        />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="@string/app_name"
+        android:textSize="40sp"
+        android:padding="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/btn_classic"
-
-        android:text="Classic"
-        android:textSize="30dp"
-
-        android:paddingTop="30dp"
-        android:paddingBottom="30dp"
-        android:layout_centerInParent="true"
-        android:layout_above="@+id/btn_arcade"
-        android:layout_marginLeft="@android:dimen/app_icon_size"
-        />
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="@string/btn_classic_string"
+        android:textSize="20sp"
+        android:padding="20dp"
+        app:layout_constraintEnd_toEndOf="@+id/title"
+        app:layout_constraintStart_toStartOf="@+id/title"
+        app:layout_constraintTop_toBottomOf="@+id/title" />
 
     <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/btn_arcade"
-
-        android:text="Arcade"
-        android:textSize="30dp"
-
-        android:paddingTop="30dp"
-        android:paddingBottom="30dp"
-        android:layout_centerInParent="true"
-        android:layout_marginLeft="@android:dimen/app_icon_size"
-        />
-
-    <Button
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:id="@+id/btn_tilt"
-
-        android:text="Tilt"
-        android:textSize="30dp"
-
-        android:paddingTop="30dp"
-        android:paddingBottom="30dp"
-        android:layout_centerInParent="true"
-        android:layout_below="@+id/btn_arcade"
-        android:layout_marginLeft="@android:dimen/app_icon_size"
-        />
+        android:layout_marginTop="16dp"
+        android:text="@string/btn_arcade_string"
+        android:textSize="20sp"
+        android:padding="20dp"
+        app:layout_constraintEnd_toEndOf="@+id/btn_classic"
+        app:layout_constraintStart_toStartOf="@+id/btn_classic"
+        app:layout_constraintTop_toBottomOf="@+id/btn_classic" />
 
     <Button
+        android:id="@+id/btn_tilt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/btn_tilt_string"
+        android:padding="20dp"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/btn_classic"
+        app:layout_constraintStart_toStartOf="@+id/btn_classic"
+        app:layout_constraintTop_toBottomOf="@+id/btn_arcade" />
+
+    <Button
+        android:id="@+id/btn_exit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/btn_exit"
-
-        android:text="Exit"
-        android:textSize="20dp"
-
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:layout_centerInParent="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@android:dimen/app_icon_size"
-        />
-
-</RelativeLayout>
+        android:layout_marginTop="150dp"
+        android:text="@string/btn_exit_string"
+        android:padding="20dp"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/title"
+        app:layout_constraintStart_toStartOf="@+id/title"
+        app:layout_constraintTop_toBottomOf="@+id/btn_tilt" />
+</androidx.constraintlayout.widget.ConstraintLayout>

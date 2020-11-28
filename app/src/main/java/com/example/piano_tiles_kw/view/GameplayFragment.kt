@@ -9,6 +9,8 @@ import com.example.piano_tiles_kw.model.Page
 import com.example.piano_tiles_kw.view.engines.raining.RainingGameEngine
 import com.example.piano_tiles_kw.view.engines.GameEngine
 
+// Contains the game using canvas
+
 class GameplayFragment : Fragment(),
     View.OnClickListener{
     private lateinit var listener: FragmentListener

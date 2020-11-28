@@ -1,134 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-<!--    gameover-->
+<!--    Title-->
     <TextView
+        android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tv_gameover"
+        android:layout_marginTop="50dp"
+        android:padding="20dp"
+        android:text="@string/res_lose"
+        android:textSize="40sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        android:text="Game Over"
-        android:textStyle="bold"
-        android:textSize="@android:dimen/app_icon_size"
-
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@android:dimen/app_icon_size"
-        />
+<!--    Score-->
 
 
-<!--    score-->
     <TextView
+        android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
-        android:text="Score : "
-
-        android:layout_centerInParent="true"
-        android:layout_toLeftOf="@+id/tv_empty_score"
-        android:layout_above="@+id/tv_emptymid"
-        />
-
-    <TextView
-        android:layout_width="5dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/tv_empty_score"
-
-        android:layout_centerInParent="true"
-        android:layout_above="@+id/tv_emptymid"
-        />
+        android:layout_marginTop="72dp"
+        android:layout_marginEnd="35dp"
+        android:padding="20dp"
+        android:text="@string/res_score"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toStartOf="@+id/tv_score_value_res"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title" />
 
     <TextView
+        android:id="@+id/tv_score_value_res"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tv_res_score"
-
+        android:layout_marginTop="72dp"
+        android:padding="20dp"
         android:text="10"
-
-        android:layout_centerInParent="true"
-        android:layout_above="@+id/tv_emptymid"
-        android:layout_toRightOf="@id/tv_empty_score"
-        />
+        android:textSize="25sp"
+        app:layout_constraintStart_toEndOf="@+id/title"
+        app:layout_constraintTop_toBottomOf="@+id/title" />
 
 
-<!--    highscore-->
+
+    <!--    HighScore-->
+
     <TextView
+        android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
-        android:text="Your High Score : "
-
-        android:layout_centerInParent="true"
-        android:layout_toLeftOf="@+id/tv_empty_highscore"
-        android:layout_below="@+id/tv_emptymid"
-        />
-
-    <TextView
-        android:layout_width="5dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/tv_empty_highscore"
-
-        android:layout_centerInParent="true"
-        android:layout_below="@+id/tv_emptymid"
-        />
+        android:layout_marginTop="32dp"
+        android:padding="20dp"
+        android:text="@string/res_highscore"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toEndOf="@+id/textView1"
+        app:layout_constraintTop_toBottomOf="@+id/textView1" />
 
     <TextView
+        android:id="@+id/tv_highscore_value_res"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tv_res_highscore"
-
+        android:layout_marginTop="32dp"
+        android:padding="20dp"
         android:text="20"
-        android:textAlignment="textEnd"
+        android:textSize="25sp"
+        app:layout_constraintStart_toStartOf="@+id/tv_score_value_res"
+        app:layout_constraintTop_toBottomOf="@+id/tv_score_value_res" />
 
-        android:layout_centerInParent="true"
-        android:layout_below="@+id/tv_emptymid"
-        android:layout_toRightOf="@id/tv_empty_highscore"
-        />
+<!--    Buttons-->
 
-
-<!--    buttons-->
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/btn_again"
-
-        android:text="Play Again"
-        android:layout_centerInParent="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@android:dimen/app_icon_size"
-        android:layout_toLeftOf="@+id/tv_empty2"
-        />
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="392dp"
+        android:padding="20dp"
+        android:text="@string/btn_playagain"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/title"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/title"
+        app:layout_constraintTop_toBottomOf="@+id/title" />
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/btn_menu"
-
-        android:text="Main Menu"
-        android:layout_marginBottom="@android:dimen/app_icon_size"
-        android:layout_centerInParent="true"
-        android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@id/tv_empty2"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:id="@+id/tv_empty2"
+        android:layout_marginTop="24dp"
+        android:padding="20dp"
+        android:text="@string/btn_mainmenu"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/btn_again"
+        app:layout_constraintStart_toStartOf="@+id/btn_again"
+        app:layout_constraintTop_toBottomOf="@+id/btn_again" />
 
-        android:layout_centerInParent="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@android:dimen/app_icon_size"
-        />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/tv_emptymid"
-
-        android:layout_centerInParent="true"
-        />
-
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

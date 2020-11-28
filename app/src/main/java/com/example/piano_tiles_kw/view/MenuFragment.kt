@@ -13,6 +13,8 @@ import com.example.piano_tiles_kw.R
 import com.example.piano_tiles_kw.databinding.FragmentMenuBinding
 import com.example.piano_tiles_kw.model.Page
 
+// Contains the main menu page to select game modes
+
 class MenuFragment : Fragment(),
     View.OnClickListener {
     private lateinit var listener: FragmentListener

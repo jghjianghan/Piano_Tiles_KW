@@ -4,7 +4,11 @@
 <!--    Buttons-->
     <string name="btn_start_string">START</string>
     <string name="btn_cancel_string">CANCEL</string>
+
     <string name="btn_exit_string">EXIT</string>
+
+    <string name="btn_playagain">Play Again</string>
+    <string name="btn_mainmenu">Main Menu</string>
 
 <!--    Modes-->
     <string name="btn_classic_string">Classic</string>
@@ -15,6 +19,27 @@
     <string name="tv_goals_title_string">Goals</string>
     <string name="tv_goals_string">...</string>
 
+    <string name="res_score">Your Score : </string>
+    <string name="res_highscore">Your High Score : </string>
 
-<!--    <string name=""></string>-->
+<!--    Description-->
+    <string name="desc_classic">
+        The tiles will move as you tap the correct tile.
+        Once you tap it wrong, the game will be over!
+    </string>
+    <string name="desc_arcade">
+        The tiles are not waiting for you and will go faster,
+        so make sure to tap them correctly and do not miss a single tile!
+    </string>
+    <string name="desc_tilt">
+        We are not going to use the tap-tap things here.
+        Tilt your device to move to the right tiles.
+        You have to get the right tiles as the tiles will keep moving!
+    </string>
+
+<!--    Result Message-->
+    <string name="res_win">Congratulations!</string>
+    <string name="res_lose">Game Over</string>
+
+<!--    <string name=""></string>   -->
 </resources>

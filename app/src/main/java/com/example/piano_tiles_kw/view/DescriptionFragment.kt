@@ -12,6 +12,8 @@ import androidx.fragment.app.Fragment
 import com.example.piano_tiles_kw.databinding.FragmentDescriptionBinding
 import com.example.piano_tiles_kw.model.Page
 
+// Contains the description of each game modes before the game starts
+
 class DescriptionFragment : Fragment(),
     View.OnClickListener{
     private lateinit var listener: FragmentListener
