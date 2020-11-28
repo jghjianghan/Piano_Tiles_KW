@@ -13,6 +13,7 @@ import android.view.View
 import android.widget.ImageView
 import androidx.core.content.res.ResourcesCompat
 import com.example.piano_tiles_kw.R
+import com.example.piano_tiles_kw.view.OnEndGameListener
 import com.example.piano_tiles_kw.view.UIThreadWrapper
 import com.example.piano_tiles_kw.view.engines.GameEngine
 import com.example.piano_tiles_kw.view.engines.TileDrawer
@@ -26,6 +27,7 @@ import kotlin.collections.ArrayList
 class RainingGameEngine(
     private val context: Context,
     private val iv: ImageView,
+    private val endGameListener : OnEndGameListener,
     private var numberOfLanes: Int = 4
 ) : GameEngine(context, iv), View.OnTouchListener {
     val handler = UIThreadWrapper(this, Looper.getMainLooper())
@@ -115,6 +117,7 @@ class RainingGameEngine(
         if (!isOver){
             isOver = true
             orchestrator.stop()
+            endGameListener.OnEndGame()
         }
     }
 

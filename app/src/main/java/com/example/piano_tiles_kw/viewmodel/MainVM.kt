@@ -9,7 +9,7 @@ import com.example.piano_tiles_kw.model.SharedPrefWriter
 /**
  * Class that manages view model, this class extends class ViewModel. This class contains all live data needed in the game.
  */
-class MainVM: ViewModel() {
+class MainVM : ViewModel() {
 
     // gameMode
     private val gameMode = MutableLiveData<GameMode>()
@@ -19,12 +19,19 @@ class MainVM: ViewModel() {
     }
     // end of gameMode
 
+    // score
+    private val score = MutableLiveData<Int>()
+    fun getScore():LiveData<Int> = score
+    fun setScore(newScore : Int) {
+        score.value = newScore
+    }
+    // end of score
+
     // highScore
     private val highScore = MutableLiveData<Int>()
     fun getHighScore():LiveData<Int> = highScore
     fun setHighScore(newHighScore : Int) {
         highScore.value = newHighScore
-        // TODO -> save ke memory ?
     }
     // end of highScore
 
@@ -35,10 +42,5 @@ class MainVM: ViewModel() {
         toolbarTitle.value = newTitle
     }
     // end of toolbarTitle
-
-    init {
-        highScore.value = 0
-        // TODO -> set highScore dari memory ?
-    }
 
 }

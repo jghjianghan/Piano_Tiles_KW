@@ -13,8 +13,7 @@ import com.example.piano_tiles_kw.viewmodel.MainVM
 
 // Contains the game using canvas
 
-class GameplayFragment : Fragment(), OnEndGameListener,
-    View.OnClickListener{
+class GameplayFragment : Fragment(), OnEndGameListener{
     private lateinit var listener: FragmentListener
     private lateinit var binding : FragmentGameplayBinding
     private lateinit var engine : GameEngine
@@ -33,12 +32,10 @@ class GameplayFragment : Fragment(), OnEndGameListener,
         binding = FragmentGameplayBinding.inflate(inflater, container, false)
         binding.ivCanvas.addOnLayoutChangeListener{ _, _, _, _, _, _, _, _, _ ->
             if (binding.ivCanvas.width > 0 && binding.ivCanvas.height>0){
-                engine = RainingGameEngine(requireActivity(), binding.ivCanvas)
+                engine = RainingGameEngine(requireActivity(), binding.ivCanvas,this)
                 engine.startGame()
             }
         }
-
-        binding.btnTemp.setOnClickListener(this)
         return binding.root
     }
 
@@ -54,12 +51,6 @@ class GameplayFragment : Fragment(), OnEndGameListener,
         }
     }
 
-    override fun onClick(v: View) {
-        if(v == binding.btnTemp) {
-            listener.changePage(Page.RESULT)
-        }
-
-    }
 
     companion object {
         fun newInstance(title: String?): GameplayFragment {
@@ -72,11 +63,14 @@ class GameplayFragment : Fragment(), OnEndGameListener,
     }
 
     override fun OnEndGame() {
-        vm.getHighScore().observe(this, {
-            val score = engine.getScore()
-            if(score > it) {
-                listener.updateHighscore((score))
-            }
-        })
+
+        val currHighscore = vm.getHighScore().value
+        val score = engine.getScore()
+        vm.setScore(score)
+        if(score > currHighscore!!) {
+            listener.updateHighscore((score))
+        }
+
+        listener.changePage(Page.RESULT)
     }
 }

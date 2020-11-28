@@ -3,16 +3,13 @@ package com.example.piano_tiles_kw.view
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
-import android.view.View.OnTouchListener
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import com.example.piano_tiles_kw.databinding.FragmentDescriptionBinding
+import androidx.lifecycle.ViewModelProvider
 import com.example.piano_tiles_kw.databinding.FragmentResultBinding
 import com.example.piano_tiles_kw.model.Page
+import com.example.piano_tiles_kw.viewmodel.MainVM
 
 // Contains the result page after the game is over
 
@@ -20,6 +17,20 @@ class ResultFragment : Fragment(),
     View.OnClickListener{
     private lateinit var listener: FragmentListener
     private lateinit var binding : FragmentResultBinding
+    private lateinit var vm : MainVM
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        vm = ViewModelProvider(requireActivity()).get(MainVM::class.java)
+
+        vm.getHighScore().observe(this, {
+            binding.tvHighscoreValueRes.text = it.toString()
+        })
+
+        vm.getScore().observe(this, {
+            binding.tvScoreValueRes.text = it.toString()
+        })
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

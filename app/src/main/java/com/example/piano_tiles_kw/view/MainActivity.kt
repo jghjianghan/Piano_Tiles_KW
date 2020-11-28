@@ -12,7 +12,7 @@ import com.example.piano_tiles_kw.view.MenuFragment.Companion.newInstance
 import com.example.piano_tiles_kw.viewmodel.MainVM
 
 class MainActivity : AppCompatActivity(), FragmentListener {
-    private lateinit var viewModel: MainVM
+    private lateinit var vm: MainVM
     private lateinit var menuFragment: MenuFragment
     private lateinit var descriptionFragment: DescriptionFragment
     private lateinit var gameplayFragment: GameplayFragment
@@ -32,7 +32,9 @@ class MainActivity : AppCompatActivity(), FragmentListener {
         resultFragment = ResultFragment()
         sharedPrefWriter = SharedPrefWriter(this)
 
-        viewModel = ViewModelProvider(this).get(MainVM::class.java)
+        vm = ViewModelProvider(this).get(MainVM::class.java)
+
+        vm.setHighScore(sharedPrefWriter.getHighscore())
         changePage(Page.MENU)
     }
 
@@ -66,5 +68,6 @@ class MainActivity : AppCompatActivity(), FragmentListener {
 
     override fun updateHighscore(newHighscore : Int) {
         sharedPrefWriter.saveHighscore(newHighscore)
+        vm.setHighScore(newHighscore)
     }
 }

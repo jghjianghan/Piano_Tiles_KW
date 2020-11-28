@@ -4,26 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-<!--    <TextView-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:id="@+id/tv_score"-->
-<!--        android:text="Score : "-->
-
-<!--        android:layout_centerInParent="true"-->
-<!--        android:layout_toLeftOf="@id/tv_empty"-->
-<!--        android:layout_marginTop="@android:dimen/app_icon_size"-->
-<!--        />-->
-
-<!--    <TextView-->
-<!--        android:layout_width="5dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:id="@+id/tv_empty"-->
-
-<!--        android:layout_centerInParent="true"-->
-<!--        android:layout_below="@+id/tv_description"-->
-<!--        android:layout_marginTop="@android:dimen/app_icon_size"-->
-<!--        />-->
+    <ImageView
+        android:id="@+id/iv_canvas"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -36,18 +20,6 @@
         android:layout_marginTop="@android:dimen/app_icon_size"
         />
 
-    <ImageView
-        android:id="@+id/iv_canvas"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 
-<!--    Temporary button-->
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/btn_temp"
-        android:text="temporary button : NEXT"
-        android:layout_centerInParent="true"
-        />
 
 </RelativeLayout>
