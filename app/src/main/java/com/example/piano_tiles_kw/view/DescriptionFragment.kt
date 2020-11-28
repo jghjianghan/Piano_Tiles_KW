@@ -18,7 +18,6 @@ class DescriptionFragment : Fragment(),
     View.OnClickListener{
     private lateinit var listener: FragmentListener
     private lateinit var binding : FragmentDescriptionBinding
-    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
