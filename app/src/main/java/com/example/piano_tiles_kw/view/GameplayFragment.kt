@@ -4,19 +4,26 @@ import android.content.Context
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.piano_tiles_kw.databinding.FragmentGameplayBinding
 import com.example.piano_tiles_kw.model.Page
 import com.example.piano_tiles_kw.view.engines.raining.RainingGameEngine
 import com.example.piano_tiles_kw.view.engines.GameEngine
+import com.example.piano_tiles_kw.viewmodel.MainVM
 
 // Contains the game using canvas
 
-class GameplayFragment : Fragment(),
+class GameplayFragment : Fragment(), OnEndGameListener,
     View.OnClickListener{
     private lateinit var listener: FragmentListener
     private lateinit var binding : FragmentGameplayBinding
     private lateinit var engine : GameEngine
-//    private lateinit var handler: UIThreadWrapper
+    private lateinit var vm : MainVM
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        vm = ViewModelProvider(requireActivity()).get(MainVM::class.java)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -62,5 +69,14 @@ class GameplayFragment : Fragment(),
             fragment.arguments = args
             return fragment
         }
+    }
+
+    override fun OnEndGame() {
+        vm.getHighScore().observe(this, {
+            val score = engine.getScore()
+            if(score > it) {
+                listener.updateHighscore((score))
+            }
+        })
     }
 }

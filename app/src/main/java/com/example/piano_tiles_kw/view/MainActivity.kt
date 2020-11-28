@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.piano_tiles_kw.R
 import com.example.piano_tiles_kw.databinding.ActivityMainBinding
 import com.example.piano_tiles_kw.model.Page
+import com.example.piano_tiles_kw.model.SharedPrefWriter
 import com.example.piano_tiles_kw.view.MenuFragment.Companion.newInstance
 import com.example.piano_tiles_kw.viewmodel.MainVM
 
@@ -18,6 +19,7 @@ class MainActivity : AppCompatActivity(), FragmentListener {
     private lateinit var resultFragment: ResultFragment
     private lateinit var fragmentManager: FragmentManager
     private lateinit var binding: ActivityMainBinding
+    private lateinit var sharedPrefWriter: SharedPrefWriter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +30,7 @@ class MainActivity : AppCompatActivity(), FragmentListener {
         descriptionFragment = DescriptionFragment()
         gameplayFragment = GameplayFragment()
         resultFragment = ResultFragment()
+        sharedPrefWriter = SharedPrefWriter(this)
 
         viewModel = ViewModelProvider(this).get(MainVM::class.java)
         changePage(Page.MENU)
@@ -59,5 +62,9 @@ class MainActivity : AppCompatActivity(), FragmentListener {
     override fun closeApplication() {
         moveTaskToBack(true)
         finish()
+    }
+
+    override fun updateHighscore(newHighscore : Int) {
+        sharedPrefWriter.saveHighscore(newHighscore)
     }
 }

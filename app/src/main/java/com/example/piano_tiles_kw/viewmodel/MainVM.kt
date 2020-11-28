@@ -4,11 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.piano_tiles_kw.model.GameMode
+import com.example.piano_tiles_kw.model.SharedPrefWriter
 
 /**
  * Class that manages view model, this class extends class ViewModel. This class contains all live data needed in the game.
  */
 class MainVM: ViewModel() {
+
     // gameMode
     private val gameMode = MutableLiveData<GameMode>()
     fun getGameMode():LiveData<GameMode> = gameMode
