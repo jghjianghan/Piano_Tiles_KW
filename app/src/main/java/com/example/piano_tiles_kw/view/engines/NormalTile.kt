@@ -41,6 +41,10 @@ class NormalTile(
         }
     }
 
+    override fun lift(dy: Float) {
+        cy -= dy
+    }
+
     override fun isTileTouched(x: Float, y: Float): Boolean {
         return isClickable && x >= cx - width / 2 && x <= cx + width / 2 && y >= cy && y <= cy + height
     }
@@ -48,6 +52,11 @@ class NormalTile(
     override fun onClick() {
         isClickable = false
         paint.color = dimColor
+    }
+
+    override fun onMissed() {
+        isClickable = false
+        paint.color = missedColor
     }
 
     override fun getDrawer(): TileDrawer = Drawer()

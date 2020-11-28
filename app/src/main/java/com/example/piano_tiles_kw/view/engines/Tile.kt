@@ -11,6 +11,8 @@ abstract class Tile(
      */
     abstract fun isTileTouched(x: Float, y: Float): Boolean
     abstract fun drop(dy: Float): Boolean
+    abstract fun lift(dy: Float)
     abstract fun getDrawer(): TileDrawer
     abstract fun onClick()
+    abstract fun onMissed()
 }

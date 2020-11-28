@@ -103,8 +103,6 @@ class RainingGameEngine(
             false
         ).draw(mCanvas)
 
-        println("score " + getScore())
-
         iv.invalidate()
     }
 
