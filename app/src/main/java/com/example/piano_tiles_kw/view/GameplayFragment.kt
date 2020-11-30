@@ -6,6 +6,7 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.piano_tiles_kw.databinding.FragmentGameplayBinding
+import com.example.piano_tiles_kw.model.GameMode
 import com.example.piano_tiles_kw.model.Page
 import com.example.piano_tiles_kw.view.engines.raining.RainingGameEngine
 import com.example.piano_tiles_kw.view.engines.GameEngine
@@ -32,7 +33,12 @@ class GameplayFragment : Fragment(), GameEngine.GameListener{
         binding = FragmentGameplayBinding.inflate(inflater, container, false)
         binding.ivCanvas.addOnLayoutChangeListener{ _, _, _, _, _, _, _, _, _ ->
             if (binding.ivCanvas.width > 0 && binding.ivCanvas.height>0){
-                engine = RainingGameEngine(requireActivity(), binding.ivCanvas,this)
+                //TODO("Instantiate different engine for different mode")
+                engine = when(vm.getGameMode().value){
+                    GameMode.RAINING -> RainingGameEngine(requireActivity(), binding.ivCanvas,this)
+                    else -> RainingGameEngine(requireActivity(), binding.ivCanvas,this)
+                }
+
                 engine.startGame()
             }
         }

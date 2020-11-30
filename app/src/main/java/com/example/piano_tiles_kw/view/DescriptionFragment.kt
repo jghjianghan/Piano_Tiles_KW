@@ -48,6 +48,9 @@ class DescriptionFragment : Fragment(),
                 GameMode.TILT -> {
                     binding.tvDescription.text = getString(R.string.desc_tilt)
                 }
+                GameMode.RAINING -> {
+                    binding.tvDescription.text = getString(R.string.desc_raining)
+                }
             }
         })
 

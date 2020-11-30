@@ -44,6 +44,7 @@ class MenuFragment : Fragment(),
 
         binding.btnClassic.setOnClickListener(this)
         binding.btnArcade.setOnClickListener(this)
+        binding.btnRaining.setOnClickListener(this)
         binding.btnTilt.setOnClickListener(this)
         binding.btnExit.setOnClickListener(this)
         return binding.root
@@ -62,17 +63,26 @@ class MenuFragment : Fragment(),
     }
 
     override fun onClick(v: View) {
-        if (binding.btnClassic == v) {
-            listener.changePage(Page.DESCRIPTION)
-            vm.setGameMode(GameMode.CLASSIC)
-        } else if (binding.btnArcade == v) {
-            listener.changePage(Page.DESCRIPTION)
-            vm.setGameMode(GameMode.ARCADE)
-        } else if (binding.btnTilt == v) {
-            listener.changePage(Page.DESCRIPTION)
-            vm.setGameMode(GameMode.TILT)
-        } else if (binding.btnExit == v) {
-            listener.closeApplication()
+        when (v) {
+            binding.btnClassic -> {
+                listener.changePage(Page.DESCRIPTION)
+                vm.setGameMode(GameMode.CLASSIC)
+            }
+            binding.btnArcade -> {
+                listener.changePage(Page.DESCRIPTION)
+                vm.setGameMode(GameMode.ARCADE)
+            }
+            binding.btnTilt -> {
+                listener.changePage(Page.DESCRIPTION)
+                vm.setGameMode(GameMode.TILT)
+            }
+            binding.btnRaining -> {
+                listener.changePage(Page.DESCRIPTION)
+                vm.setGameMode(GameMode.RAINING)
+            }
+            binding.btnExit -> {
+                listener.closeApplication()
+            }
         }
     }
     companion object {

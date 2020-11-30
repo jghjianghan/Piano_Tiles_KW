@@ -13,6 +13,7 @@
 <!--    Modes-->
     <string name="btn_classic_string">Classic</string>
     <string name="btn_arcade_string">Arcade</string>
+    <string name="btn_raining_string">Raining</string>
     <string name="btn_tilt_string">Tilt</string>
 
 <!--    Text Views-->
@@ -30,6 +31,10 @@
     <string name="desc_arcade">
         The tiles are not waiting for you and will go faster,
         so make sure to tap them correctly and do not miss a single tile!
+    </string>
+    <string name="desc_raining">
+        Ever played G*itar He*res?
+        In this mode, tiles will move at different speeds, so stay focus!
     </string>
     <string name="desc_tilt">
         We are not going to use the tap-tap things here.

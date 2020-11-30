@@ -44,6 +44,18 @@
         app:layout_constraintTop_toBottomOf="@+id/btn_classic" />
 
     <Button
+        android:id="@+id/btn_raining"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/btn_raining_string"
+        android:textSize="20sp"
+        android:padding="20dp"
+        app:layout_constraintEnd_toEndOf="@+id/btn_classic"
+        app:layout_constraintStart_toStartOf="@+id/btn_classic"
+        app:layout_constraintTop_toBottomOf="@+id/btn_arcade" />
+
+    <Button
         android:id="@+id/btn_tilt"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -53,13 +65,13 @@
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="@+id/btn_classic"
         app:layout_constraintStart_toStartOf="@+id/btn_classic"
-        app:layout_constraintTop_toBottomOf="@+id/btn_arcade" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_raining" />
 
     <Button
         android:id="@+id/btn_exit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="20dp"
         android:text="@string/btn_exit_string"
         android:padding="20dp"
         android:textSize="20sp"
