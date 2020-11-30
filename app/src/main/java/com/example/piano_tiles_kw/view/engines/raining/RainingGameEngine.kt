@@ -2,7 +2,6 @@ package com.example.piano_tiles_kw.view.engines.raining
 
 import android.content.Context
 import android.graphics.Color
-import android.graphics.Paint
 import android.os.Looper
 import android.text.Layout
 import android.text.StaticLayout
@@ -26,7 +25,7 @@ import kotlin.collections.ArrayList
 class RainingGameEngine(
     private val context: Context,
     private val iv: ImageView,
-    private val endGameListener : OnEndGameListener,
+    private val gameListener : GameListener,
     private var numberOfLanes: Int = 4
 ) : GameEngine(context, iv), View.OnTouchListener {
     val handler = UIThreadWrapper(this, Looper.getMainLooper())
@@ -92,17 +91,7 @@ class RainingGameEngine(
             i.drawTile(mCanvas)
         }
 
-        val score = getScore().toString()
-        val width = textPaint.measureText(score)
-        StaticLayout(
-            score,
-            textPaint,
-            width.toInt(),
-            Layout.Alignment.ALIGN_NORMAL,
-            1f,
-            0f,
-            false
-        ).draw(mCanvas)
+        gameListener.onScoreChanged(getScore())
 
         iv.invalidate()
     }
@@ -116,7 +105,7 @@ class RainingGameEngine(
         if (!isOver){
             isOver = true
             orchestrator.stop()
-            endGameListener.OnEndGame()
+            gameListener.onEndGame()
         }
     }
 

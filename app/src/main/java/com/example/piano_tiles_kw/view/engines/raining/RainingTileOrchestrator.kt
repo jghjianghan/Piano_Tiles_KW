@@ -14,11 +14,11 @@ class RainingTileOrchestrator(
     private val engine: RainingGameEngine,
     private val handler: UIThreadWrapper,
     laneCenters : ArrayList<Float>,
-    var tileWidth: Float,
+    tileWidth: Float,
     spawnDelay: Long,
     initSpeed: Float,
-    var envHeight: Float,
-    private val tileColor: Int
+    envHeight: Float,
+    tileColor: Int
 ): TileOrchestrator(laneCenters, initSpeed) {
     private val tiles = Vector<RainingTile>()
     private val spawner = Spawner(spawnDelay, tileWidth, 4f, envHeight, tileColor)
@@ -51,7 +51,7 @@ class RainingTileOrchestrator(
                 Log.d("dropSpeed", dropSpeed.toString())
                 Log.d("Tilespeed", tileSpeed.toString())
                 tiles.add(RainingTile(tileWidth, tileHeight, laneCenters.random(), envHeight, tileSpeed, tileColor))
-                Thread.sleep(delay)
+                sleep(delay)
                 if (speedUpCounter == speedUpIteration){
                     speedUpCounter = 0
                     delay = (delay*speedUpFactor).toLong()
@@ -68,7 +68,6 @@ class RainingTileOrchestrator(
                 val outTiles = ArrayList<RainingTile>()
                 val iter = tiles.iterator()
                 var missedTile = false
-                val currDropSpeed = dropSpeed
                 while (iter.hasNext()){
                     val tile = iter.next()
                     tile.drop()
@@ -83,9 +82,9 @@ class RainingTileOrchestrator(
                 }
 
                 if (missedTile){
-                    stopFlag = true;
+                    stopFlag = true
                     missedMechanism()
-                    return;
+                    return
                 }
                 tiles.removeAll(outTiles)
                 handler.redrawCanvas(drawers)
@@ -108,7 +107,7 @@ class RainingTileOrchestrator(
     }
 
     private inner class MissedAnimation(
-        private val totalDisplacement: Float,
+        totalDisplacement: Float,
         private val iteration: Int,
         private val delay: Long,
         private val postExecDelay: Long = 1000
@@ -146,20 +145,20 @@ class RainingTileOrchestrator(
     }
 
     override fun handleTouch(x: Float, y: Float) {
-        var successfulClick = false
-        val iter = tiles.iterator()
-        while (iter.hasNext()){
-            val tile = iter.next()
-            if (tile.isTileTouched(x, y)){
-                successfulClick = true
-                tile.onClick()
-                score++
-                return
+        if (!puller.stopFlag){
+            val iter = tiles.iterator()
+            while (iter.hasNext()){
+                val tile = iter.next()
+                if (tile.isTileTouched(x, y)){
+                    tile.onClick()
+                    score++
+                    return
+                }
             }
-        }
 
-        //miss
-        touchMissMechanism(x, y)
+            //miss
+            touchMissMechanism(x, y)
+        }
     }
 
     private fun touchMissMechanism(x: Float, y: Float) {
@@ -172,12 +171,10 @@ class RainingTileOrchestrator(
         }
         drawers.add(CircularFalseMark(x, y, 40f).Drawer())
         handler.redrawCanvas(drawers)
-        Thread(
-            Runnable {
-                Thread.sleep(1000)
-                stop()
-            }
-        ).start()
+        Thread {
+            Thread.sleep(1000)
+            stop()
+        }.start()
     }
 
     private fun internalStop(){

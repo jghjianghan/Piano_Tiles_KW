@@ -13,7 +13,7 @@ import com.example.piano_tiles_kw.viewmodel.MainVM
 
 // Contains the game using canvas
 
-class GameplayFragment : Fragment(), GameEngine.OnEndGameListener{
+class GameplayFragment : Fragment(), GameEngine.GameListener{
     private lateinit var listener: FragmentListener
     private lateinit var binding : FragmentGameplayBinding
     private lateinit var engine : GameEngine
@@ -62,7 +62,10 @@ class GameplayFragment : Fragment(), GameEngine.OnEndGameListener{
         }
     }
 
-    override fun OnEndGame() {
+    override fun onScoreChanged(score: Int) {
+        binding.tvScoreValue.text = score.toString()
+    }
+    override fun onEndGame() {
 
         val currHighscore = vm.getHighScore().value
         val score = engine.getScore()
