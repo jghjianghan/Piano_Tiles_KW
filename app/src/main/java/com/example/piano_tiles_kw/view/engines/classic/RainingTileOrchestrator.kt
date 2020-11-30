@@ -1,15 +1,19 @@
-package com.example.piano_tiles_kw.view.engines.raining
+package com.example.piano_tiles_kw.view.engines.classic
 
 import android.util.Log
 import com.example.piano_tiles_kw.view.UIThreadWrapper
-import com.example.piano_tiles_kw.view.engines.CircularFalseMark
 import com.example.piano_tiles_kw.view.engines.NormalTile
 import com.example.piano_tiles_kw.view.engines.TileDrawer
 import com.example.piano_tiles_kw.view.engines.TileOrchestrator
+import com.example.piano_tiles_kw.view.engines.CircularFalseMark
+import com.example.piano_tiles_kw.view.engines.raining.RainingGameEngine
 import java.util.*
-import java.util.concurrent.ThreadLocalRandom
 import kotlin.collections.ArrayList
 
+
+/**
+ * Wrongly implemented orchestrator. Can be used for classic mode
+ */
 class RainingTileOrchestrator(
     private val engine: RainingGameEngine,
     private val handler: UIThreadWrapper,
@@ -20,8 +24,8 @@ class RainingTileOrchestrator(
     var envHeight: Float,
     private val tileColor: Int
 ): TileOrchestrator(laneCenters, initSpeed) {
-    private val tiles = Vector<RainingTile>()
-    private val spawner = Spawner(spawnDelay, tileWidth, 4f, envHeight, tileColor)
+    private val tiles = Vector<NormalTile>()
+    private val spawner = Spawner(spawnDelay, tileWidth, initSpeed, envHeight, tileColor)
     private val puller = Puller()
     private val speeder = Speeder()
     var tileHeight = 1.8f * tileWidth
@@ -37,25 +41,15 @@ class RainingTileOrchestrator(
     private inner class Spawner(
         private var delay: Long,
         private val tileWidth: Float,
-        private val speedDeviationFactor: Float,
+        private val initSpeed: Float,
         private val envHeight: Float,
         private val tileColor: Int
     ): Thread() {
         var stopFlag = false
-        private val speedUpFactor: Float = .95f
-        private val speedUpIteration = 15
-        private var speedUpCounter = 0
         override fun run() {
             while (!stopFlag){
-                val tileSpeed = (ThreadLocalRandom.current().nextFloat() - 0.5f) * speedDeviationFactor + dropSpeed
-                Log.d("dropSpeed", dropSpeed.toString())
-                Log.d("Tilespeed", tileSpeed.toString())
-                tiles.add(RainingTile(tileWidth, tileHeight, laneCenters.random(), envHeight, tileSpeed, tileColor))
+                tiles.add(NormalTile(tileWidth, tileHeight, laneCenters.random(), envHeight, tileColor))
                 Thread.sleep(delay)
-                if (speedUpCounter == speedUpIteration){
-                    speedUpCounter = 0
-                    delay = (delay*speedUpFactor).toLong()
-                }
             }
         }
     }
@@ -65,13 +59,13 @@ class RainingTileOrchestrator(
         override fun run() {
             while (!stopFlag){
                 val drawers = ArrayList<TileDrawer>()
-                val outTiles = ArrayList<RainingTile>()
+                val outTiles = ArrayList<NormalTile>()
                 val iter = tiles.iterator()
                 var missedTile = false
                 val currDropSpeed = dropSpeed
                 while (iter.hasNext()){
                     val tile = iter.next()
-                    tile.drop()
+                    tile.drop(currDropSpeed)
                     drawers.add(tile.Drawer())
                     if (tile.isOut){
                         if (!missedTile && tile.isClickable){
@@ -95,7 +89,7 @@ class RainingTileOrchestrator(
     }
 
     private inner class Speeder(
-        private val interval: Long = 15000,
+        private val interval: Long = 2000,
         private val speedUpFactor: Float = 1.1f,
     ): Thread() {
         var stopFlag = false
@@ -110,12 +104,11 @@ class RainingTileOrchestrator(
     private inner class MissedAnimation(
         private val totalDisplacement: Float,
         private val iteration: Int,
-        private val delay: Long,
-        private val postExecDelay: Long = 1000
-    ) {
+        private val delay: Long
+    ): Thread(){
         private val step = totalDisplacement/iteration
 
-        fun start() {
+        override fun run() {
             println("step $step")
             for (i in 1..iteration){
                 val drawers = ArrayList<TileDrawer>()
@@ -125,16 +118,14 @@ class RainingTileOrchestrator(
                 }
                 println("drawers: " + drawers.size)
                 handler.redrawCanvas(drawers)
-                Thread.sleep(delay)
+                sleep(delay)
             }
-            Thread.sleep(postExecDelay)
         }
     }
     private fun missedMechanism(){
-        println("missedStarting")
-        internalStop()
-        missed.start()
         stop()
+        println("missedStarting")
+        missed.start()
     }
 
     fun pause(){
@@ -159,11 +150,8 @@ class RainingTileOrchestrator(
         }
 
         //miss
-        touchMissMechanism(x, y)
-    }
+        Log.d("handle touch", "missed")
 
-    private fun touchMissMechanism(x: Float, y: Float) {
-        internalStop()
         val drawers = ArrayList<TileDrawer>()
         val iter2 = tiles.iterator()
         while (iter2.hasNext()){
@@ -172,21 +160,13 @@ class RainingTileOrchestrator(
         }
         drawers.add(CircularFalseMark(x, y, 40f).Drawer())
         handler.redrawCanvas(drawers)
-        Thread(
-            Runnable {
-                Thread.sleep(1000)
-                stop()
-            }
-        ).start()
+        stop()
     }
 
-    private fun internalStop(){
+    fun stop(){
         spawner.stopFlag = true
         puller.stopFlag = true
         speeder.stopFlag = true
-    }
-    fun stop(){
-        internalStop()
         println("stopping orchestrator")
         if (!engine.isOver){
             handler.stopGame()

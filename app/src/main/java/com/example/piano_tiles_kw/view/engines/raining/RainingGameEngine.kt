@@ -40,8 +40,8 @@ class RainingGameEngine(
         handler,
         laneCenters,
         laneWidth,
-        2000,
-        10.toFloat(),
+        1200,
+        8f,
         iv.height.toFloat(),
         Color.BLACK
     )
