@@ -13,7 +13,7 @@ import com.example.piano_tiles_kw.viewmodel.MainVM
 
 // Contains the game using canvas
 
-class GameplayFragment : Fragment(), OnEndGameListener{
+class GameplayFragment : Fragment(), GameEngine.OnEndGameListener{
     private lateinit var listener: FragmentListener
     private lateinit var binding : FragmentGameplayBinding
     private lateinit var engine : GameEngine

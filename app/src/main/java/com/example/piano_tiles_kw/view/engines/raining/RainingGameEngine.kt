@@ -13,7 +13,6 @@ import android.view.View
 import android.widget.ImageView
 import androidx.core.content.res.ResourcesCompat
 import com.example.piano_tiles_kw.R
-import com.example.piano_tiles_kw.view.OnEndGameListener
 import com.example.piano_tiles_kw.view.UIThreadWrapper
 import com.example.piano_tiles_kw.view.engines.GameEngine
 import com.example.piano_tiles_kw.view.engines.TileDrawer

@@ -19,6 +19,10 @@ import java.util.concurrent.ThreadLocalRandom
  * @param iv The ImageView where the game will be displayed and played
  */
 abstract class GameEngine (private val context: Context, private val iv: ImageView) {
+    interface OnEndGameListener {
+        fun OnEndGame()
+    }
+
     private val mBitmap: Bitmap = Bitmap.createBitmap(
         iv.width,
         iv.height,
