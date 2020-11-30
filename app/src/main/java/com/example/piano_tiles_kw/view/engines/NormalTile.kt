@@ -20,9 +20,26 @@ class NormalTile(
 ) : Tile(width, height, cx) {
     var paint = Paint()
     var cy = 0 - height
+
+    /**
+     * isOut determines whether the tile has gone out of the screen
+     * When isOut is true, the tile handler (engine/orchestrator) must handle the event,
+     * for example by removing the tile
+     */
     var isOut = false
+    /**
+     * isClickable determines whether the tile has ever been clicked before
+     */
     var isClickable = true
+
+    /**
+     * The color of the tile when the tile is clicked once
+     */
     var dimColor = Color.GRAY
+
+    /**
+     * The color of the tile when the player didn't click the tile before it got out of the screen
+     */
     var missedColor = Color.RED
 
     init {
