@@ -118,14 +118,22 @@ class RainingGameEngine(
                         "touch_listener",
                         "down ${event.getX(pointerIndex)}, ${event.getY(pointerIndex)}"
                     )
-                    orchestrator.handleTouch(event.getX(pointerIndex), event.getY(pointerIndex))
+                    if (orchestrator.handleTouch(event.getX(pointerIndex), event.getY(pointerIndex))){
+                        pianoPlayer.playNext()
+                    }  else {
+                        pianoPlayer.playWrong()
+                    }
                 }
                 MotionEvent.ACTION_POINTER_DOWN -> {
                     Log.d(
                         "touch_listener",
                         "pointer_down ${event.getX(pointerIndex)}, ${event.getY(pointerIndex)}"
                     )
-                    orchestrator.handleTouch(event.getX(pointerIndex), event.getY(pointerIndex))
+                    if (orchestrator.handleTouch(event.getX(pointerIndex), event.getY(pointerIndex))){
+                        pianoPlayer.playNext()
+                    } else {
+                        pianoPlayer.playWrong()
+                    }
                 }
             }
         }

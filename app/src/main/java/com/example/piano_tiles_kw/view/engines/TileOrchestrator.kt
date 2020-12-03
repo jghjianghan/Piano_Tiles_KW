@@ -6,5 +6,10 @@ abstract class TileOrchestrator(
 ) {
     var score = 0
 
-    abstract fun handleTouch(x: Float, y: Float)
+    /**
+     * @param x the x coordinate of the touch location
+     * @param y the x coordinate of the touch location
+     * @return true if the touch was a successful touch
+     */
+    abstract fun handleTouch(x: Float, y: Float): Boolean
 }

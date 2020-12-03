@@ -144,7 +144,7 @@ class RainingTileOrchestrator(
         TODO("Yet to be implemented")
     }
 
-    override fun handleTouch(x: Float, y: Float) {
+    override fun handleTouch(x: Float, y: Float): Boolean {
         if (!puller.stopFlag){
             val iter = tiles.iterator()
             while (iter.hasNext()){
@@ -152,13 +152,14 @@ class RainingTileOrchestrator(
                 if (tile.isTileTouched(x, y)){
                     tile.onClick()
                     score++
-                    return
+                    return true
                 }
             }
 
             //miss
             touchMissMechanism(x, y)
         }
+        return false
     }
 
     private fun touchMissMechanism(x: Float, y: Float) {

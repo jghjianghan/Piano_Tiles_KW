@@ -11,6 +11,8 @@ import android.view.View
 import android.widget.ImageView
 import androidx.core.content.res.ResourcesCompat
 import com.example.piano_tiles_kw.R
+import com.example.piano_tiles_kw.model.audio.PianoPlayer
+import com.example.piano_tiles_kw.model.audio.Song
 import java.util.concurrent.ThreadLocalRandom
 
 /**
@@ -32,6 +34,7 @@ abstract class GameEngine (private val context: Context, private val iv: ImageVi
     protected val mCanvas = Canvas(mBitmap)
     protected val strokePaint = Paint()
     protected val fillPaint = Paint()
+    protected val pianoPlayer = PianoPlayer(context, Song.FUR_ELISE)
 
     init {
         iv.setImageBitmap(mBitmap)
