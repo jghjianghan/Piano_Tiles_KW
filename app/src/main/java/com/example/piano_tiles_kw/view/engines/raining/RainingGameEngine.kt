@@ -45,7 +45,7 @@ class RainingGameEngine(
         8f,
         iv.height.toFloat(),
         Color.BLACK,
-        pianoPlayer = PianoPlayer(context, Song.FUR_ELISE)
+        pianoPlayer = PianoPlayer(context, Song.values().random())
     )
     var isOver = false
 
