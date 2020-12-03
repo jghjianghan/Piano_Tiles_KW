@@ -34,7 +34,6 @@ abstract class GameEngine (private val context: Context, private val iv: ImageVi
     protected val mCanvas = Canvas(mBitmap)
     protected val strokePaint = Paint()
     protected val fillPaint = Paint()
-    protected val pianoPlayer = PianoPlayer(context, Song.FUR_ELISE)
 
     init {
         iv.setImageBitmap(mBitmap)

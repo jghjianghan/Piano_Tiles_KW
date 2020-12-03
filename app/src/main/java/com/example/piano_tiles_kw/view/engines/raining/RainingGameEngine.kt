@@ -12,6 +12,8 @@ import android.view.View
 import android.widget.ImageView
 import androidx.core.content.res.ResourcesCompat
 import com.example.piano_tiles_kw.R
+import com.example.piano_tiles_kw.model.audio.PianoPlayer
+import com.example.piano_tiles_kw.model.audio.Song
 import com.example.piano_tiles_kw.view.UIThreadWrapper
 import com.example.piano_tiles_kw.view.engines.GameEngine
 import com.example.piano_tiles_kw.view.engines.TileDrawer
@@ -33,6 +35,7 @@ class RainingGameEngine(
     val laneCenters = ArrayList<Float>()
     val scoreTextSize = 24
     val textPaint = TextPaint()
+
     val orchestrator = RainingTileOrchestrator(
         this,
         handler,
@@ -42,7 +45,7 @@ class RainingGameEngine(
         8f,
         iv.height.toFloat(),
         Color.BLACK,
-        pianoPlayer
+        pianoPlayer = PianoPlayer(context, Song.FUR_ELISE)
     )
     var isOver = false
 
