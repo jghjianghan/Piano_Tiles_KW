@@ -22,7 +22,9 @@ class RainingTile(
 ) : Tile(width, height, cx) {
     var paint = Paint()
     var cy = 0 - height
+    @Volatile
     var isOut = false
+    @Volatile
     var isClickable = true
     var dimColor = Color.GRAY
     var missedColor = Color.RED
@@ -59,7 +61,7 @@ class RainingTile(
     }
 
     override fun isTileTouched(x: Float, y: Float): Boolean {
-        return isClickable && x >= cx - width / 2 && x <= cx + width / 2 && y >= cy && y <= cy + height
+        return x >= cx - width / 2 && x <= cx + width / 2 && y >= cy && y <= cy + height
     }
 
     override fun onClick() {

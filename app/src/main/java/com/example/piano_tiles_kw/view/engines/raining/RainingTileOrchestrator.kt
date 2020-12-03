@@ -1,12 +1,14 @@
 package com.example.piano_tiles_kw.view.engines.raining
 
 import android.util.Log
+import com.example.piano_tiles_kw.model.audio.PianoPlayer
 import com.example.piano_tiles_kw.view.UIThreadWrapper
 import com.example.piano_tiles_kw.view.engines.CircularFalseMark
 import com.example.piano_tiles_kw.view.engines.NormalTile
 import com.example.piano_tiles_kw.view.engines.TileDrawer
 import com.example.piano_tiles_kw.view.engines.TileOrchestrator
 import java.util.*
+import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.ThreadLocalRandom
 import kotlin.collections.ArrayList
 
@@ -18,9 +20,10 @@ class RainingTileOrchestrator(
     spawnDelay: Long,
     initSpeed: Float,
     envHeight: Float,
-    tileColor: Int
-): TileOrchestrator(laneCenters, initSpeed) {
-    private val tiles = Vector<RainingTile>()
+    tileColor: Int,
+    pianoPlayer: PianoPlayer
+): TileOrchestrator(laneCenters, initSpeed, pianoPlayer) {
+    private val tiles = CopyOnWriteArrayList<RainingTile>()
     private val spawner = Spawner(spawnDelay, tileWidth, 4f, envHeight, tileColor)
     private val puller = Puller()
     private val speeder = Speeder()
@@ -32,6 +35,7 @@ class RainingTileOrchestrator(
         spawner.start()
         puller.start()
         speeder.start()
+
     }
 
     private inner class Spawner(
@@ -42,19 +46,40 @@ class RainingTileOrchestrator(
         private val tileColor: Int
     ): Thread() {
         var stopFlag = false
-        private val speedUpFactor: Float = .95f
+        private val speedUpValue: Float = delay * .08f
+        private val minimumDelay = 300
         private val speedUpIteration = 15
         private var speedUpCounter = 0
+        private var prevCenter = -1f;
         override fun run() {
+            Log.d("missed", envHeight.toString())
             while (!stopFlag){
-                val tileSpeed = (ThreadLocalRandom.current().nextFloat() - 0.5f) * speedDeviationFactor + dropSpeed
-                Log.d("dropSpeed", dropSpeed.toString())
-                Log.d("Tilespeed", tileSpeed.toString())
-                tiles.add(RainingTile(tileWidth, tileHeight, laneCenters.random(), envHeight, tileSpeed, tileColor))
+                var tileSpeed = (ThreadLocalRandom.current().nextFloat() - 0.5f) * speedDeviationFactor + dropSpeed
+                Log.d("missed", envHeight.toString())
+                Log.d("missed dropSpeed", dropSpeed.toString())
+                Log.d("missed Tilespeed", tileSpeed.toString())
+                var center: Float = 0f
+                do {
+                    center = laneCenters.random()
+                } while (center == prevCenter)
+                prevCenter = center
+                tiles.add(RainingTile(tileWidth, tileHeight, center, envHeight, tileSpeed, tileColor))
+                if (ThreadLocalRandom.current().nextDouble() < 0.1){//double spawn
+                    do {
+                        center = laneCenters.random()
+                    } while (center == prevCenter)
+                    prevCenter = center
+                    tileSpeed = (ThreadLocalRandom.current().nextFloat() - 0.5f) * speedDeviationFactor + dropSpeed
+                    tiles.add(RainingTile(tileWidth, tileHeight, center, envHeight, tileSpeed, tileColor))
+                }
+                speedUpCounter++
                 sleep(delay)
+                Log.d("spawner", delay.toString())
                 if (speedUpCounter == speedUpIteration){
                     speedUpCounter = 0
-                    delay = (delay*speedUpFactor).toLong()
+                    if (delay-speedUpValue >= minimumDelay){
+                        delay = (delay-speedUpValue).toLong()
+                    }
                 }
             }
         }
@@ -74,6 +99,7 @@ class RainingTileOrchestrator(
                     drawers.add(tile.Drawer())
                     if (tile.isOut){
                         if (!missedTile && tile.isClickable){
+                            Log.d("missed",tile.cx.toString() + " " + tile.cy.toString())
                             missedTile = true
                             tile.onMissed()
                         }
@@ -82,7 +108,6 @@ class RainingTileOrchestrator(
                 }
 
                 if (missedTile){
-                    stopFlag = true
                     missedMechanism()
                     return
                 }
@@ -94,14 +119,15 @@ class RainingTileOrchestrator(
     }
 
     private inner class Speeder(
-        private val interval: Long = 15000,
-        private val speedUpFactor: Float = 1.1f,
+        private val interval: Long = 13000,
+        private val speedUpValue: Float = dropSpeed * 0.12f,
     ): Thread() {
         var stopFlag = false
         override fun run() {
+            Log.d("speedup", dropSpeed.toString())
             while (!stopFlag){
                 sleep(interval)
-                dropSpeed *= speedUpFactor
+                dropSpeed += speedUpValue
             }
         }
     }
@@ -130,8 +156,9 @@ class RainingTileOrchestrator(
         }
     }
     private fun missedMechanism(){
-        println("missedStarting")
+        Log.d("missed","missedStarting")
         internalStop()
+        pianoPlayer?.playWrong()
         missed.start()
         stop()
     }
@@ -144,22 +171,29 @@ class RainingTileOrchestrator(
         TODO("Yet to be implemented")
     }
 
-    override fun handleTouch(x: Float, y: Float): Boolean {
+    override fun handleTouch(x: Float, y: Float) {
         if (!puller.stopFlag){
             val iter = tiles.iterator()
+            var onTileTouch = false
             while (iter.hasNext()){
                 val tile = iter.next()
                 if (tile.isTileTouched(x, y)){
-                    tile.onClick()
-                    score++
-                    return true
+                    onTileTouch = true
+                    if (tile.isClickable){
+                        tile.onClick()
+                        score++
+                        pianoPlayer?.playNext()
+                        return
+                    }
                 }
             }
-
-            //miss
-            touchMissMechanism(x, y)
+            if (!onTileTouch){
+                //miss
+                pianoPlayer?.playWrong()
+                touchMissMechanism(x, y)
+            }
         }
-        return false
+
     }
 
     private fun touchMissMechanism(x: Float, y: Float) {
