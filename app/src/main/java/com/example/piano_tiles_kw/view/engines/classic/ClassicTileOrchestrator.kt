@@ -20,7 +20,7 @@ class ClassicTileOrchestrator(
 
 ): TileOrchestrator(laneCenters, 0f, pianoPlayer) {
     private val tiles = Vector<NormalTile>()
-    private val linePerScreen = (envHeight / (1.8*tileWidth)).toInt()
+    private val linePerScreen = (envHeight / (1.8*tileWidth) + 0.5).toInt()
     private val tileHeight = envHeight / linePerScreen
     private val dropper = Dropper(7, 20)
     private val spawner = Spawner()

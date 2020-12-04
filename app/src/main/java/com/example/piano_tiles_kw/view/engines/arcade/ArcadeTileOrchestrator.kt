@@ -21,7 +21,7 @@ class ArcadeTileOrchestrator(
 
 ): TileOrchestrator(laneCenters, 0f, pianoPlayer) {
     private val tiles = Vector<NormalTile>()
-    private val linePerScreen = (envHeight / (1.8*tileWidth)).toInt()
+    private val linePerScreen = (envHeight / (1.8*tileWidth) + 0.5).toInt()
     private val tileHeight = envHeight / linePerScreen
     private val dropper = Dropper(20)
     private val spawner = Spawner()
@@ -29,10 +29,10 @@ class ArcadeTileOrchestrator(
     private var score : Int = 0
     private val missed = MissedAnimation(tileHeight, 10, 20)
     private var isStarted = false
-
+    private var step = tileHeight/30
+    private val speeder = Speeder()
 
     init {
-
         var currHeight = -tileHeight
         for(i in 0..linePerScreen) {
             laneHeightCenters.add(currHeight)
@@ -110,20 +110,12 @@ class ArcadeTileOrchestrator(
     ) : Thread() {
         var stopFlag = false
         var pauseFlag = false
-        private var step = tileHeight/30
-        private val speedUpBound = 20
-        private var iteration = 0
-        private val speedIncrement = 0.3f
+
 
         override fun run() {
             while(!stopFlag) {
                 if(!pauseFlag) {
-                    iteration++
-                    if(iteration == speedUpBound) {
-                        iteration = 0
-                        step += speedIncrement
-                    }
-                    var drawers = ArrayList<TileDrawer>()
+                    val drawers = ArrayList<TileDrawer>()
                     val outTiles = ArrayList<NormalTile>()
                     var missedTile = false
                     if(tiles[tiles.size - 1].cy+tileHeight >= 0) {
@@ -153,9 +145,21 @@ class ArcadeTileOrchestrator(
                 sleep(delay)
             }
         }
-
     }
 
+    private inner class Speeder(
+        private val interval: Long = 10000,
+        private val speedIncrement: Float = 1.2f
+    ): Thread() {
+        var stopFlag = false
+        override fun run() {
+
+            while (!stopFlag){
+                sleep(interval)
+                step += speedIncrement
+            }
+        }
+    }
 
     fun pause(){
     }
@@ -173,6 +177,7 @@ class ArcadeTileOrchestrator(
                         if(!isStarted) {
                             isStarted = true
                             dropper.start()
+                            speeder.start()
                         }
                         score++
                         pianoPlayer?.playNext()
