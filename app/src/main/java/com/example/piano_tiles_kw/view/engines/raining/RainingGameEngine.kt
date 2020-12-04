@@ -3,8 +3,6 @@ package com.example.piano_tiles_kw.view.engines.raining
 import android.content.Context
 import android.graphics.Color
 import android.os.Looper
-import android.text.Layout
-import android.text.StaticLayout
 import android.text.TextPaint
 import android.util.Log
 import android.view.MotionEvent
