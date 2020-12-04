@@ -181,7 +181,7 @@ class RainingTileOrchestrator(
                     onTileTouch = true
                     if (tile.isClickable){
                         tile.onClick()
-                        score++
+//                        score++
                         pianoPlayer?.playNext()
                         return
                     }

@@ -7,6 +7,8 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.widget.ImageView
+import com.example.piano_tiles_kw.model.audio.PianoPlayer
+import com.example.piano_tiles_kw.model.audio.Song
 import com.example.piano_tiles_kw.view.UIThreadWrapper
 import com.example.piano_tiles_kw.view.engines.GameEngine
 import com.example.piano_tiles_kw.view.engines.TileDrawer
@@ -26,14 +28,16 @@ class ClassicGameEngine(
     val handler = UIThreadWrapper(this, Looper.getMainLooper())
     val laneWidth = (iv.width.toFloat()) / numberOfLanes
     val laneCenters = ArrayList<Float>()
+    val songSelected = Song.values().random()
     val orchestrator = ClassicTileOrchestrator(
         this,
         handler,
         laneCenters,
         laneWidth,
         iv.height.toFloat(),
-        30,
-        5
+        songSelected.noteList.size,
+        5,
+        PianoPlayer(context, songSelected)
     )
     var isOver = false
 
@@ -116,5 +120,5 @@ class ClassicGameEngine(
         return true
     }
 
-    override fun getScore(): Int = orchestrator.score
+    override fun getScore(): Float = orchestrator.score as Float
 }
