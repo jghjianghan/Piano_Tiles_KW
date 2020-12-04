@@ -11,6 +11,7 @@ import com.example.piano_tiles_kw.model.GameMode
 import com.example.piano_tiles_kw.model.Page
 import com.example.piano_tiles_kw.view.engines.raining.RainingGameEngine
 import com.example.piano_tiles_kw.view.engines.GameEngine
+import com.example.piano_tiles_kw.view.engines.arcade.ArcadeGameEngine
 import com.example.piano_tiles_kw.view.engines.classic.ClassicGameEngine
 import com.example.piano_tiles_kw.viewmodel.MainVM
 
@@ -40,13 +41,15 @@ class GameplayFragment : Fragment(), GameEngine.GameListener{
                 when(vm.getGameMode().value) {
                     GameMode.CLASSIC -> {
                         engine = ClassicGameEngine(requireActivity(), binding.ivCanvas,this)
-                        engine.startGame()
                     }
-                    else -> {
+                    GameMode.ARCADE -> {
+                        engine = ArcadeGameEngine(requireActivity(), binding.ivCanvas,this)
+                    }
+                    GameMode.RAINING -> {
                         engine = RainingGameEngine(requireActivity(), binding.ivCanvas,this)
-                        engine.startGame()
                     }
                 }
+                engine.startGame()
 
             }
         }
