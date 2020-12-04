@@ -36,7 +36,6 @@ class ClassicGameEngine(
         laneWidth,
         iv.height.toFloat(),
         songSelected.noteList.size,
-        5,
         PianoPlayer(context, songSelected)
     )
     var isOver = false

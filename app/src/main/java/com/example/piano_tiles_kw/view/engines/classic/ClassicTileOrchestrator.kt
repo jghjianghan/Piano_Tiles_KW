@@ -16,12 +16,12 @@ class ClassicTileOrchestrator(
     private val tileWidth: Float,
     private val envHeight: Float,
     private val totalLine: Int,
-    private val linePerScreen: Int,
     pianoPlayer: PianoPlayer
 
 ): TileOrchestrator(laneCenters, 0f, pianoPlayer) {
     private val tiles = Vector<NormalTile>()
-    private val tileHeight : Float = envHeight / linePerScreen
+    private val linePerScreen = (envHeight / (1.8*tileWidth)).toInt()
+    private val tileHeight = envHeight / linePerScreen
     private val dropper = Dropper(7, 20)
     private val spawner = Spawner()
     private val laneHeightCenters = ArrayList<Float>() // index 0 di atas luar layar
@@ -92,7 +92,7 @@ class ClassicTileOrchestrator(
             handler.redrawCanvas(drawers)
         }
 
-        fun spawn() {
+        fun spawn(prefCy: Float) {
             if(normalTilesSpawned < totalLine) {
                 val cx = laneCenters.random()
                 tiles.add(
@@ -100,7 +100,7 @@ class ClassicTileOrchestrator(
                         tileWidth,
                         tileHeight,
                         cx,
-                        laneHeightCenters[0],
+                        prefCy - tileHeight,
                         envHeight,
                         Color.BLACK
                     )
@@ -113,7 +113,7 @@ class ClassicTileOrchestrator(
                             tileWidth,
                             tileHeight,
                             laneCenters[i],
-                            laneHeightCenters[0],
+                            prefCy - tileHeight,
                             envHeight,
                             Color.GREEN,
                             false
@@ -149,7 +149,7 @@ class ClassicTileOrchestrator(
                     if(iteration < totalIteration) {
                         drawers = ArrayList()
                         if(tiles[tiles.size - 1].cy >= laneHeightCenters[1]) {
-                            spawner.spawn()
+                            spawner.spawn(tiles[tiles.size-1].cy)
                         }
                         for (tile in tiles){
                             tile.drop(step)

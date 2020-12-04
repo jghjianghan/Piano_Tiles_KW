@@ -17,13 +17,12 @@ class ArcadeTileOrchestrator(
     laneCenters: ArrayList<Float>,
     private val tileWidth: Float,
     private val envHeight: Float,
-    private val totalLine: Int,
-    private val linePerScreen: Int,
     pianoPlayer: PianoPlayer
 
 ): TileOrchestrator(laneCenters, 0f, pianoPlayer) {
     private val tiles = Vector<NormalTile>()
-    private val tileHeight : Float = envHeight / linePerScreen
+    private val linePerScreen = (envHeight / (1.8*tileWidth)).toInt()
+    private val tileHeight = envHeight / linePerScreen
     private val dropper = Dropper(20)
     private val spawner = Spawner()
     private val laneHeightCenters = ArrayList<Float>() // index 0 di atas luar layar
@@ -33,11 +32,14 @@ class ArcadeTileOrchestrator(
 
 
     init {
+
         var currHeight = -tileHeight
         for(i in 0..linePerScreen) {
             laneHeightCenters.add(currHeight)
             currHeight += tileHeight
         }
+
+        println("tileHeight : "  + tileHeight)
     }
 
     fun start() {
