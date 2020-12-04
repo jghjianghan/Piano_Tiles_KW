@@ -10,6 +10,7 @@ import com.example.piano_tiles_kw.model.GameMode
 import com.example.piano_tiles_kw.model.Page
 import com.example.piano_tiles_kw.view.engines.raining.RainingGameEngine
 import com.example.piano_tiles_kw.view.engines.GameEngine
+import com.example.piano_tiles_kw.view.engines.classic.ClassicGameEngine
 import com.example.piano_tiles_kw.viewmodel.MainVM
 
 // Contains the game using canvas
@@ -33,13 +34,17 @@ class GameplayFragment : Fragment(), GameEngine.GameListener{
         binding = FragmentGameplayBinding.inflate(inflater, container, false)
         binding.ivCanvas.addOnLayoutChangeListener{ _, _, _, _, _, _, _, _, _ ->
             if (binding.ivCanvas.width > 0 && binding.ivCanvas.height>0){
-                //TODO("Instantiate different engine for different mode")
-                engine = when(vm.getGameMode().value){
-                    GameMode.RAINING -> RainingGameEngine(requireActivity(), binding.ivCanvas,this)
-                    else -> RainingGameEngine(requireActivity(), binding.ivCanvas,this)
+                when(vm.getGameMode().value) {
+                    GameMode.CLASSIC -> {
+                        engine = ClassicGameEngine(requireActivity(), binding.ivCanvas,this)
+                        engine.startGame()
+                    }
+                    else -> {
+                        engine = RainingGameEngine(requireActivity(), binding.ivCanvas,this)
+                        engine.startGame()
+                    }
                 }
 
-                engine.startGame()
             }
         }
         return binding.root

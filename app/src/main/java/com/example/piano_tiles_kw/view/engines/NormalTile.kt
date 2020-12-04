@@ -16,10 +16,23 @@ class NormalTile(
     height: Float,
     cx: Float,
     private val envHeight: Float,
-    color: Int
+    color: Int,
+    var isClickable: Boolean = true
 ) : Tile(width, height, cx) {
     var paint = Paint()
     var cy = 0 - height
+
+    constructor(
+        width: Float,
+        height: Float,
+        cx: Float,
+        cy: Float,
+        envHeight: Float,
+        color: Int,
+        isClickable: Boolean = true
+    ): this(width,height,cx,envHeight,color, isClickable){
+        this.cy = cy
+    }
 
     /**
      * isOut determines whether the tile has gone out of the screen
@@ -27,10 +40,10 @@ class NormalTile(
      * for example by removing the tile
      */
     var isOut = false
-    /**
-     * isClickable determines whether the tile has ever been clicked before
-     */
-    var isClickable = true
+//    /**
+//     * isClickable determines whether the tile has ever been clicked before
+//     */
+//    var isClickable = true
 
     /**
      * The color of the tile when the tile is clicked once
@@ -46,15 +59,10 @@ class NormalTile(
         paint.color = color
     }
 
-    override fun drop(dy: Float): Boolean {
-        return if (!isOut) {
-            cy += dy
-            if (cy > envHeight) {
-                isOut = true
-            }
-            true
-        } else {
-            false
+    override fun drop(dy: Float) {
+        cy += dy
+        if (cy > envHeight) {
+            isOut = true
         }
     }
 
@@ -67,8 +75,10 @@ class NormalTile(
     }
 
     override fun onClick() {
-        isClickable = false
-        paint.color = dimColor
+        if(isClickable) {
+            isClickable = false
+            paint.color = dimColor
+        }
     }
 
     override fun onMissed() {

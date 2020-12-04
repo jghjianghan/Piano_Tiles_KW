@@ -37,22 +37,17 @@ class RainingTile(
         "This Tile will drop itself according to its own speed " +
         "assigned in constructor and will ignore the passed arguments",
         ReplaceWith("drop()"))
-    override fun drop(dy: Float): Boolean {
-        return drop()
+    override fun drop(dy: Float) {
+        drop()
     }
     /**
      * Drops the tile according to its assign speed (in the constructor)
      * @return true if tile is dropped, false otherwise
      */
-    fun drop(): Boolean{
-        return if (!isOut) {
-            cy += speed
-            if (cy > envHeight) {
-                isOut = true
-            }
-            true
-        } else {
-            false
+    fun drop(){
+        cy += speed
+        if (cy > envHeight) {
+            isOut = true
         }
     }
 

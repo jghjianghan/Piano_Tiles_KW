@@ -10,7 +10,7 @@ abstract class Tile(
      * @return true if the tile successfully dropped, false if tile refuse to drop
      */
     abstract fun isTileTouched(x: Float, y: Float): Boolean
-    abstract fun drop(dy: Float): Boolean
+    abstract fun drop(dy: Float)
     abstract fun lift(dy: Float)
     abstract fun getDrawer(): TileDrawer
     abstract fun onClick()
