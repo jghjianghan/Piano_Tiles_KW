@@ -2,6 +2,7 @@ package com.example.piano_tiles_kw.view
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,19 +28,43 @@ class ResultFragment : Fragment(),
         vm.getGameMode().observe(this, {
             when(it){
                 GameMode.CLASSIC -> {
+                    vm.getClassicHighScore().observe(this, {
+                        binding.tvHighscoreValueRes.text = if (it==Float.MAX_VALUE){"-"} else {toString()}
+                    })
 
+                    vm.getClassicScore().observe(this, {
+                        binding.tvScoreValueRes.text = if (it==Float.MAX_VALUE){"-"} else {toString()}
+                    })
                 }
-                GameMode.ARCADE -> TODO()
+                GameMode.ARCADE -> {
+                    vm.getArcadeHighScore().observe(this, {
+                        binding.tvHighscoreValueRes.text = it.toString()
+                    })
+
+                    vm.getArcadeScore().observe(this, {
+                        binding.tvScoreValueRes.text = it.toString()
+                    })
+                }
                 GameMode.RAINING -> {
                     vm.getRainingHighScore().observe(this, {
+                        Log.d("raining highscore", it.toString())
                         binding.tvHighscoreValueRes.text = it.toString()
                     })
 
                     vm.getRainingScore().observe(this, {
+                        Log.d("raining score", it.toString())
                         binding.tvScoreValueRes.text = it.toString()
                     })
                 }
-                GameMode.TILT -> TODO()
+                GameMode.TILT -> {
+                    vm.getTiltHighScore().observe(this, {
+                        binding.tvHighscoreValueRes.text = it.toString()
+                    })
+
+                    vm.getTiltScore().observe(this, {
+                        binding.tvScoreValueRes.text = it.toString()
+                    })
+                }
             }
         })
 

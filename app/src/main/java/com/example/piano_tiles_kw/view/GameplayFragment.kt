@@ -2,6 +2,7 @@ package com.example.piano_tiles_kw.view
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -79,10 +80,13 @@ class GameplayFragment : Fragment(), GameEngine.GameListener{
         binding.tvScoreValue.text = score.toString()
     }
     override fun onEndGame() {
+        Log.d("raining end game", "-")
         when(this.gameMode){
             GameMode.RAINING -> {
                 val currHighscore = vm.getRainingHighScore().value
+                Log.d("raining gp highscore", currHighscore.toString())
                 val score = engine.getScore() as Int
+                Log.d("raining gp score", score.toString())
                 vm.setRainingScore(score)
                 if(score > currHighscore!!) {
                     listener.updateHighscore(score, gameMode)
@@ -92,12 +96,26 @@ class GameplayFragment : Fragment(), GameEngine.GameListener{
                 val currHighscore = vm.getClassicHighScore().value
                 val score = engine.getScore() as Float
                 vm.setClassicScore(score)
-                if(score > currHighscore!!) {
+                if(score < currHighscore!!) {
                     listener.updateHighscore(score, gameMode)
                 }
             }
-            GameMode.ARCADE -> TODO()
-            GameMode.TILT -> TODO()
+            GameMode.ARCADE -> {
+                val currHighscore = vm.getArcadeHighScore().value
+                val score = engine.getScore() as Int
+                vm.setArcadeScore(score)
+                if(score < currHighscore!!) {
+                    listener.updateHighscore(score, gameMode)
+                }
+            }
+            GameMode.TILT -> {
+                val currHighscore = vm.getTiltHighScore().value
+                val score = engine.getScore() as Int
+                vm.setTiltScore(score)
+                if(score < currHighscore!!) {
+                    listener.updateHighscore(score, gameMode)
+                }
+            }
         }
 
         listener.changePage(Page.RESULT)

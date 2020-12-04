@@ -1,6 +1,7 @@
 package com.example.piano_tiles_kw.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
@@ -79,22 +80,22 @@ class MainActivity : AppCompatActivity(), FragmentListener {
             GameMode.RAINING -> {
                 val hs = newHighscore as Int
                 sharedPrefWriter.saveRainingHighscore(hs)
-                vm.setRainingScore(hs)
+                vm.setRainingHighScore(hs)
             }
             GameMode.CLASSIC -> {
                 val hs = newHighscore as Float
                 sharedPrefWriter.saveClassicHighscore(hs)
-                vm.setClassicScore(hs)
+                vm.setClassicHighScore(hs)
             }
             GameMode.ARCADE -> {
                 val hs = newHighscore as Int
                 sharedPrefWriter.saveArcadeHighscore(hs)
-                vm.setArcadeScore(hs)
+                vm.setArcadeHighScore(hs)
             }
             GameMode.TILT -> {
                 val hs = newHighscore as Int
                 sharedPrefWriter.saveTiltHighscore(hs)
-                vm.setTiltScore(hs)
+                vm.setTiltHighScore(hs)
             }
         }
     }
