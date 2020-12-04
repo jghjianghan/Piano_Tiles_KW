@@ -24,6 +24,7 @@ class ClassicTileOrchestrator(
     private val dropper = Dropper(10,15)
     private val spawner = Spawner()
     private val laneHeightCenters = ArrayList<Float>() // index 0 di atas luar layar
+    private val score = 0f
 
     init {
         var currHeight = -tileHeight
@@ -38,6 +39,8 @@ class ClassicTileOrchestrator(
         spawner.start()
         dropper.start()
     }
+
+    override fun getScore(): Number = score
 
     private inner class Spawner {
         private var normalTilesSpawned = 0 // Black Tiles
@@ -136,7 +139,7 @@ class ClassicTileOrchestrator(
                     if (tile.isTileTouched(x, y)){
                         tile.onClick()
                         dropper.drop()
-                        score++
+//                        score++
                     }
                     else if(y >= tile.cy && y <= tile.cy + tileHeight ){ // miss
                         touchMissMechanism(x, tile.cy)

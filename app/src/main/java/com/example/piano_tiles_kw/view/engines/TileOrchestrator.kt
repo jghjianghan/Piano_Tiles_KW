@@ -7,7 +7,8 @@ abstract class TileOrchestrator(
     protected var dropSpeed: Float,
     protected val pianoPlayer: PianoPlayer? = null
 ) {
-    var score = 0
+
 
     abstract fun handleTouch(x: Float, y: Float)
+    abstract fun getScore(): Number
 }

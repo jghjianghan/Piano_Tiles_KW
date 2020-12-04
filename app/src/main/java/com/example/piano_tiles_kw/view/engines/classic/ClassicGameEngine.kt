@@ -116,5 +116,5 @@ class ClassicGameEngine(
         return true
     }
 
-    override fun getScore(): Int = orchestrator.score
+    override fun getScore(): Number = orchestrator.getScore()
 }

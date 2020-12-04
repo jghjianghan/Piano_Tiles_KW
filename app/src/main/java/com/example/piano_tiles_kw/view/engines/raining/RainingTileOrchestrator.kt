@@ -29,6 +29,9 @@ class RainingTileOrchestrator(
     private val speeder = Speeder()
     var tileHeight = 1.8f * tileWidth
     private val missed = MissedAnimation(tileHeight, 10, 20)
+    private var score = 0
+
+    override fun getScore(): Number = score
 
     fun start() {
         println("orchestrator starting")
