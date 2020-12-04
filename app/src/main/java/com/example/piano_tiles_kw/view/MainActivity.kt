@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import com.example.piano_tiles_kw.R
 import com.example.piano_tiles_kw.databinding.ActivityMainBinding
+import com.example.piano_tiles_kw.model.GameMode
 import com.example.piano_tiles_kw.model.Page
 import com.example.piano_tiles_kw.model.SharedPrefWriter
 import com.example.piano_tiles_kw.view.MenuFragment.Companion.newInstance
@@ -33,8 +34,8 @@ class MainActivity : AppCompatActivity(), FragmentListener {
         sharedPrefWriter = SharedPrefWriter(this)
 
         vm = ViewModelProvider(this).get(MainVM::class.java)
+        initHighscore()
 
-        vm.setHighScore(sharedPrefWriter.getHighscore())
         changePage(Page.MENU)
     }
 
@@ -66,8 +67,35 @@ class MainActivity : AppCompatActivity(), FragmentListener {
         finish()
     }
 
-    override fun updateHighscore(newHighscore : Int) {
-        sharedPrefWriter.saveHighscore(newHighscore)
-        vm.setHighScore(newHighscore)
+    private fun initHighscore (){
+        vm.setClassicHighScore(sharedPrefWriter.getClassicHighscore())
+        vm.setArcadeHighScore(sharedPrefWriter.getArcadeHighscore())
+        vm.setRainingHighScore(sharedPrefWriter.getRainingHighscore())
+        vm.setTiltHighScore(sharedPrefWriter.getTiltHighscore())
+    }
+
+    override fun updateHighscore(newHighscore : Number, mode: GameMode) {
+        when(mode){
+            GameMode.RAINING -> {
+                val hs = newHighscore as Int
+                sharedPrefWriter.saveRainingHighscore(hs)
+                vm.setRainingScore(hs)
+            }
+            GameMode.CLASSIC -> {
+                val hs = newHighscore as Float
+                sharedPrefWriter.saveClassicHighscore(hs)
+                vm.setClassicScore(hs)
+            }
+            GameMode.ARCADE -> {
+                val hs = newHighscore as Int
+                sharedPrefWriter.saveArcadeHighscore(hs)
+                vm.setArcadeScore(hs)
+            }
+            GameMode.TILT -> {
+                val hs = newHighscore as Int
+                sharedPrefWriter.saveTiltHighscore(hs)
+                vm.setTiltScore(hs)
+            }
+        }
     }
 }

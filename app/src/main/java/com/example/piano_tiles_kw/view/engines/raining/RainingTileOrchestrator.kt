@@ -77,9 +77,9 @@ class RainingTileOrchestrator(
                 Log.d("spawner", delay.toString())
                 if (speedUpCounter == speedUpIteration){
                     speedUpCounter = 0
-                    if (delay-speedUpValue >= minimumDelay){
-                        delay = (delay-speedUpValue).toLong()
-                    }
+                    delay = if (delay-speedUpValue >= minimumDelay){
+                        (delay-speedUpValue).toLong()
+                    } else minimumDelay.toLong()
                 }
             }
         }

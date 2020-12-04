@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.piano_tiles_kw.databinding.FragmentResultBinding
+import com.example.piano_tiles_kw.model.GameMode
 import com.example.piano_tiles_kw.model.Page
 import com.example.piano_tiles_kw.viewmodel.MainVM
 
@@ -23,13 +24,25 @@ class ResultFragment : Fragment(),
         super.onActivityCreated(savedInstanceState)
         vm = ViewModelProvider(requireActivity()).get(MainVM::class.java)
 
-        vm.getHighScore().observe(this, {
-            binding.tvHighscoreValueRes.text = it.toString()
+        vm.getGameMode().observe(this, {
+            when(it){
+                GameMode.CLASSIC -> {
+
+                }
+                GameMode.ARCADE -> TODO()
+                GameMode.RAINING -> {
+                    vm.getRainingHighScore().observe(this, {
+                        binding.tvHighscoreValueRes.text = it.toString()
+                    })
+
+                    vm.getRainingScore().observe(this, {
+                        binding.tvScoreValueRes.text = it.toString()
+                    })
+                }
+                GameMode.TILT -> TODO()
+            }
         })
 
-        vm.getScore().observe(this, {
-            binding.tvScoreValueRes.text = it.toString()
-        })
     }
 
     override fun onCreateView(
