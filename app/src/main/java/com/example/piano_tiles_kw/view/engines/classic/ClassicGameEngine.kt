@@ -77,8 +77,10 @@ class ClassicGameEngine(
         for (i in drawers) {
             i.drawTile(mCanvas)
         }
-
-        gameListener.onScoreChanged(getScore())
+        val score = getScore()
+        if (score != Float.MAX_VALUE){
+            gameListener.onScoreChanged(score)
+        }
 
         iv.invalidate()
     }

@@ -207,11 +207,11 @@ class ClassicTileOrchestrator(
                     else if(y >= tile.cy && y <= tile.cy + tileHeight ){ // miss
                         pianoPlayer?.playWrong()
                         touchMissMechanism(x, tile.cy)
+                        score = Float.MAX_VALUE
                     }
                     return
                 }
             }
-
         }
     }
 
