@@ -29,11 +29,11 @@ class ResultFragment : Fragment(),
             when(it){
                 GameMode.CLASSIC -> {
                     vm.getClassicHighScore().observe(this, {
-                        binding.tvHighscoreValueRes.text = if (it==Float.MAX_VALUE){"-"} else {toString()}
+                        binding.tvHighscoreValueRes.text = if (it==Float.MAX_VALUE){"-"} else {it.toString()}
                     })
 
                     vm.getClassicScore().observe(this, {
-                        binding.tvScoreValueRes.text = if (it==Float.MAX_VALUE){"-"} else {toString()}
+                        binding.tvScoreValueRes.text = if (it==Float.MAX_VALUE){"-"} else {it.toString()}
                     })
                 }
                 GameMode.ARCADE -> {
