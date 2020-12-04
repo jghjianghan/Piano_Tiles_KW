@@ -23,7 +23,7 @@ import java.util.concurrent.ThreadLocalRandom
 abstract class GameEngine (private val context: Context, private val iv: ImageView) {
     interface GameListener {
         fun onEndGame()
-        fun onScoreChanged(score: Int)
+        fun onScoreChanged(score: Number)
     }
 
     private val mBitmap: Bitmap = Bitmap.createBitmap(
@@ -61,5 +61,5 @@ abstract class GameEngine (private val context: Context, private val iv: ImageVi
     abstract fun startGame()
     abstract fun stopGame()
 
-    abstract fun getScore(): Int
+    abstract fun getScore(): Number
 }

@@ -20,10 +20,12 @@ class GameplayFragment : Fragment(), GameEngine.GameListener{
     private lateinit var binding : FragmentGameplayBinding
     private lateinit var engine : GameEngine
     private lateinit var vm : MainVM
+    private lateinit var gameMode: GameMode
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         vm = ViewModelProvider(requireActivity()).get(MainVM::class.java)
+        this.gameMode = vm.getGameMode().value!!
     }
 
     override fun onCreateView(
@@ -73,16 +75,29 @@ class GameplayFragment : Fragment(), GameEngine.GameListener{
         }
     }
 
-    override fun onScoreChanged(score: Int) {
+    override fun onScoreChanged(score: Number) {
         binding.tvScoreValue.text = score.toString()
     }
     override fun onEndGame() {
-
-        val currHighscore = vm.getHighScore().value
-        val score = engine.getScore()
-        vm.setScore(score)
-        if(score > currHighscore!!) {
-            listener.updateHighscore((score))
+        when(this.gameMode){
+            GameMode.RAINING -> {
+                val currHighscore = vm.getRainingHighScore().value
+                val score = engine.getScore() as Int
+                vm.setRainingScore(score)
+                if(score > currHighscore!!) {
+                    listener.updateHighscore(score, gameMode)
+                }
+            }
+            GameMode.CLASSIC -> {
+                val currHighscore = vm.getClassicHighScore().value
+                val score = engine.getScore() as Float
+                vm.setClassicScore(score)
+                if(score > currHighscore!!) {
+                    listener.updateHighscore(score, gameMode)
+                }
+            }
+            GameMode.ARCADE -> TODO()
+            GameMode.TILT -> TODO()
         }
 
         listener.changePage(Page.RESULT)
