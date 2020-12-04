@@ -107,7 +107,7 @@ class GameplayFragment : Fragment(), GameEngine.GameListener{
                 val currHighscore = vm.getArcadeHighScore().value
                 val score = engine.getScore() as Int
                 vm.setArcadeScore(score)
-                if(score < currHighscore!!) {
+                if(score > currHighscore!!) {
                     listener.updateHighscore(score, gameMode)
                 }
             }
@@ -115,7 +115,7 @@ class GameplayFragment : Fragment(), GameEngine.GameListener{
                 val currHighscore = vm.getTiltHighScore().value
                 val score = engine.getScore() as Int
                 vm.setTiltScore(score)
-                if(score < currHighscore!!) {
+                if(score > currHighscore!!) {
                     listener.updateHighscore(score, gameMode)
                 }
             }
