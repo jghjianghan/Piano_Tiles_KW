@@ -14,5 +14,6 @@ enum class MusicalNote(val resId: Int) {
     C5(R.raw.c5),
     D5(R.raw.d5),
     EB5(R.raw.eb5),
-    E5(R.raw.e5)
+    E5(R.raw.e5),
+    F5(R.raw.f5),
 }
