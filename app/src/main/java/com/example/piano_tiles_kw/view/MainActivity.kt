@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity(), FragmentListener {
     private lateinit var fragmentManager: FragmentManager
     private lateinit var binding: ActivityMainBinding
     private lateinit var sharedPrefWriter: SharedPrefWriter
+    private var page = Page.MENU
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,12 +62,20 @@ class MainActivity : AppCompatActivity(), FragmentListener {
                 ft.replace(R.id.fragment_container, resultFragment)
             }
             Page.HIGHSCORE -> {
-                ft.replace(R.id.fragment_container, highscoreFragment)
+                ft.replace(R.id.fragment_container, highscoreFragment).addToBackStack(null)
             }
         }
         ft.commit()
+        page = p
     }
 
+    override fun onBackPressed() {
+        when(page){
+            Page.GAMEPLAY -> {/*Pause?*/}
+            Page.RESULT -> changePage(Page.MENU)
+            else -> super.onBackPressed()
+        }
+    }
 
     override fun closeApplication() {
         moveTaskToBack(true)
