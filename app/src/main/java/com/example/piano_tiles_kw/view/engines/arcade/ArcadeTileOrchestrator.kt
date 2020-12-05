@@ -29,7 +29,7 @@ class ArcadeTileOrchestrator(
     private var score : Int = 0
     private val missed = MissedAnimation(tileHeight, 10, 20)
     private var isStarted = false
-    private var step = tileHeight/30
+    private var step = tileHeight/15
     private val speeder = Speeder()
 
     init {
