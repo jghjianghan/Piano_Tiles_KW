@@ -46,6 +46,7 @@ class MenuFragment : Fragment(),
         binding.btnArcade.setOnClickListener(this)
         binding.btnRaining.setOnClickListener(this)
         binding.btnTilt.setOnClickListener(this)
+        binding.btnHighscore.setOnClickListener(this)
         binding.btnExit.setOnClickListener(this)
         return binding.root
     }
@@ -80,6 +81,7 @@ class MenuFragment : Fragment(),
                 listener.changePage(Page.DESCRIPTION)
                 vm.setGameMode(GameMode.RAINING)
             }
+            binding.btnHighscore -> listener.changePage(Page.HIGHSCORE)
             binding.btnExit -> {
                 listener.closeApplication()
             }

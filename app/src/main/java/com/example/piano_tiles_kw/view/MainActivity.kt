@@ -19,6 +19,7 @@ class MainActivity : AppCompatActivity(), FragmentListener {
     private lateinit var descriptionFragment: DescriptionFragment
     private lateinit var gameplayFragment: GameplayFragment
     private lateinit var resultFragment: ResultFragment
+    private lateinit var highscoreFragment: HighscoreFragment
     private lateinit var fragmentManager: FragmentManager
     private lateinit var binding: ActivityMainBinding
     private lateinit var sharedPrefWriter: SharedPrefWriter
@@ -32,6 +33,7 @@ class MainActivity : AppCompatActivity(), FragmentListener {
         descriptionFragment = DescriptionFragment()
         gameplayFragment = GameplayFragment()
         resultFragment = ResultFragment()
+        highscoreFragment = HighscoreFragment()
         sharedPrefWriter = SharedPrefWriter(this)
 
         vm = ViewModelProvider(this).get(MainVM::class.java)
@@ -58,6 +60,9 @@ class MainActivity : AppCompatActivity(), FragmentListener {
             Page.RESULT -> {
                 ft.replace(R.id.fragment_container, resultFragment)
             }
+            Page.HIGHSCORE -> {
+                ft.replace(R.id.fragment_container, highscoreFragment)
+            }
         }
         ft.commit()
     }
@@ -78,22 +83,22 @@ class MainActivity : AppCompatActivity(), FragmentListener {
     override fun updateHighscore(newHighscore : Number, mode: GameMode) {
         when(mode){
             GameMode.RAINING -> {
-                val hs = newHighscore as Int
+                val hs = newHighscore.toInt()
                 sharedPrefWriter.saveRainingHighscore(hs)
                 vm.setRainingHighScore(hs)
             }
             GameMode.CLASSIC -> {
-                val hs = newHighscore as Float
+                val hs = newHighscore.toFloat()
                 sharedPrefWriter.saveClassicHighscore(hs)
                 vm.setClassicHighScore(hs)
             }
             GameMode.ARCADE -> {
-                val hs = newHighscore as Int
+                val hs = newHighscore.toInt()
                 sharedPrefWriter.saveArcadeHighscore(hs)
                 vm.setArcadeHighScore(hs)
             }
             GameMode.TILT -> {
-                val hs = newHighscore as Int
+                val hs = newHighscore.toInt()
                 sharedPrefWriter.saveTiltHighscore(hs)
                 vm.setTiltHighScore(hs)
             }

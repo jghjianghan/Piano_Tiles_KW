@@ -7,5 +7,6 @@ enum class Page {
     MENU,
     DESCRIPTION,
     GAMEPLAY,
-    RESULT;
+    RESULT,
+    HIGHSCORE;
 }

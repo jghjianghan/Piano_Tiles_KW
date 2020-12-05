@@ -6,6 +6,9 @@
     <string name="btn_cancel_string">CANCEL</string>
 
     <string name="btn_exit_string">EXIT</string>
+    <string name="btn_highscore_string">High Scores</string>
+    <string name="btn_highscore_reset">Reset All</string>
+    <string name="btn_back">Back</string>
 
     <string name="btn_playagain">Play Again</string>
     <string name="btn_mainmenu">Main Menu</string>
