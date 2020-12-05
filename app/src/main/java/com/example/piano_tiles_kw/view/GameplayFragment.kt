@@ -1,6 +1,10 @@
 package com.example.piano_tiles_kw.view
 
 import android.content.Context
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -9,20 +13,25 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.piano_tiles_kw.databinding.FragmentGameplayBinding
 import com.example.piano_tiles_kw.model.GameMode
 import com.example.piano_tiles_kw.model.Page
-import com.example.piano_tiles_kw.view.engines.raining.RainingGameEngine
 import com.example.piano_tiles_kw.view.engines.GameEngine
 import com.example.piano_tiles_kw.view.engines.arcade.ArcadeGameEngine
 import com.example.piano_tiles_kw.view.engines.classic.ClassicGameEngine
+import com.example.piano_tiles_kw.view.engines.raining.RainingGameEngine
+import com.example.piano_tiles_kw.view.engines.tilt.TiltGameEngine
 import com.example.piano_tiles_kw.viewmodel.MainVM
 
 // Contains the game using canvas
 
-class GameplayFragment : Fragment(), GameEngine.GameListener{
+class GameplayFragment : SensorEventListener, Fragment(), GameEngine.GameListener{
     private lateinit var listener: FragmentListener
     private lateinit var binding : FragmentGameplayBinding
     private lateinit var engine : GameEngine
     private lateinit var vm : MainVM
     private lateinit var gameMode: GameMode
+    private lateinit var sensorManager: SensorManager
+    private  var accelerometer: Sensor? = null
+    private var sensorData: SensorData = SensorData()
+
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -40,20 +49,53 @@ class GameplayFragment : Fragment(), GameEngine.GameListener{
             if (binding.ivCanvas.width > 0 && binding.ivCanvas.height>0){
                 when(vm.getGameMode().value) {
                     GameMode.CLASSIC -> {
-                        engine = ClassicGameEngine(requireActivity(), binding.ivCanvas,this)
+                        engine = ClassicGameEngine(requireActivity(), binding.ivCanvas, this)
                     }
                     GameMode.ARCADE -> {
-                        engine = ArcadeGameEngine(requireActivity(), binding.ivCanvas,this)
+                        engine = ArcadeGameEngine(requireActivity(), binding.ivCanvas, this)
                     }
                     GameMode.RAINING -> {
-                        engine = RainingGameEngine(requireActivity(), binding.ivCanvas,this)
+                        engine = RainingGameEngine(requireActivity(), binding.ivCanvas, this)
+                    }
+                    GameMode.TILT -> {
+                        engine = TiltGameEngine(requireActivity(), binding.ivCanvas, this, sensorData)
                     }
                 }
                 engine.startGame()
 
             }
         }
+
+        sensorManager = requireActivity().getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+
         return binding.root
+    }
+
+    override fun onSensorChanged(event: SensorEvent?) {
+        var sensorType = event!!.sensor.getType()
+        if(sensorType == Sensor.TYPE_ACCELEROMETER){
+            sensorData.sensorX = event.values[0]
+        }
+    }
+
+    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(accelerometer != null){
+            sensorManager.registerListener(
+                this, accelerometer,
+                SensorManager.SENSOR_DELAY_GAME
+            )
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        sensorManager.unregisterListener(this)
     }
 
     override fun onAttach(context: Context) {
@@ -91,7 +133,7 @@ class GameplayFragment : Fragment(), GameEngine.GameListener{
                 val score = engine.getScore() as Int
                 Log.d("raining gp score", score.toString())
                 vm.setRainingScore(score)
-                if(score > currHighscore!!) {
+                if (score > currHighscore!!) {
                     listener.updateHighscore(score, gameMode)
                 }
             }
@@ -99,7 +141,7 @@ class GameplayFragment : Fragment(), GameEngine.GameListener{
                 val currHighscore = vm.getClassicHighScore().value
                 val score = engine.getScore() as Float
                 vm.setClassicScore(score)
-                if(score < currHighscore!!) {
+                if (score < currHighscore!!) {
                     listener.updateHighscore(score, gameMode)
                 }
             }
@@ -107,7 +149,7 @@ class GameplayFragment : Fragment(), GameEngine.GameListener{
                 val currHighscore = vm.getArcadeHighScore().value
                 val score = engine.getScore() as Int
                 vm.setArcadeScore(score)
-                if(score > currHighscore!!) {
+                if (score > currHighscore!!) {
                     listener.updateHighscore(score, gameMode)
                 }
             }
@@ -115,7 +157,7 @@ class GameplayFragment : Fragment(), GameEngine.GameListener{
                 val currHighscore = vm.getTiltHighScore().value
                 val score = engine.getScore() as Int
                 vm.setTiltScore(score)
-                if(score > currHighscore!!) {
+                if (score > currHighscore!!) {
                     listener.updateHighscore(score, gameMode)
                 }
             }
@@ -123,4 +165,6 @@ class GameplayFragment : Fragment(), GameEngine.GameListener{
 
         listener.changePage(Page.RESULT)
     }
+
+
 }

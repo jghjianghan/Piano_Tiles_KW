@@ -23,8 +23,8 @@
     <string name="tv_goals_title_string">Goals</string>
     <string name="tv_goals_string">...</string>
 
-    <string name="res_score">Your Score : </string>
-    <string name="res_highscore">Your High Score : </string>
+    <string name="res_score">Score : </string>
+    <string name="res_highscore">High Score : </string>
 
 <!--    Description-->
     <string name="desc_classic">
@@ -37,12 +37,14 @@
     </string>
     <string name="desc_raining">
         Ever played G*itar He*oes?
-        In this mode, tiles will move at different speeds, so stay focus!
+        In this mode, tiles are moving at different speeds, it is
+        like.. the rain. You know, just tap them!
     </string>
     <string name="desc_tilt">
         We are not going to use the tap-tap things here.
-        Tilt your device to move to the right tiles.
-        You have to get the right tiles as the tiles will keep moving!
+        Tilt your device to move the ball.
+        You have to "catch" the raining tiles, or at least,
+        touch them with your ball!
     </string>
 
 <!--    Result Message-->

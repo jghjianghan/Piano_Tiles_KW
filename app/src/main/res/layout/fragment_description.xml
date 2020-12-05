@@ -31,7 +31,7 @@
         android:padding="20dp"
         android:text="@string/desc_arcade"
         android:textStyle="bold|italic"
-        android:background="@drawable/button_background"
+        android:background="@drawable/desc_background"
         android:textSize="25sp"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
@@ -48,7 +48,7 @@
         android:text="@string/btn_start_string"
         android:textStyle="bold|italic"
         android:background="@drawable/button_background_agree"
-        android:textSize="18sp"
+        android:textSize="15sp"
         app:layout_constraintEnd_toStartOf="@+id/title"
         app:layout_constraintStart_toStartOf="@+id/tv_description"
         app:layout_constraintTop_toBottomOf="@+id/tv_description" />
@@ -62,11 +62,18 @@
         android:text="@string/btn_cancel_string"
         android:textStyle="bold|italic"
         android:background="@drawable/button_background_cancel"
-        android:textSize="18sp"
+        android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="@+id/tv_description"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/title"
         app:layout_constraintTop_toBottomOf="@+id/tv_description" />
 
+    <ImageView
+        android:id="@+id/paperpin"
+        android:layout_width="96dp"
+        android:layout_height="192dp"
+        android:src="@drawable/paper_pin"
+        app:layout_constraintEnd_toEndOf="@+id/tv_description"
+        app:layout_constraintTop_toTopOf="@+id/title" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

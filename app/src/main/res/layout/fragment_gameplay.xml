@@ -15,6 +15,9 @@
         android:id="@+id/tv_score_value"
 
         android:text="(SCORE)"
+        android:textColor="@color/colorRed"
+        android:textStyle="bold|italic"
+        android:textSize="32sp"
 
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@android:dimen/app_icon_size"

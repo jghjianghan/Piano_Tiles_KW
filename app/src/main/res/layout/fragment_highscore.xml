@@ -35,7 +35,8 @@
         android:layout_marginTop="20dp"
         android:text="@string/btn_highscore_reset"
         android:textStyle="bold|italic"
-        android:background="@drawable/button_background_cancel"
+        android:textColor="@color/colorWhite"
+        android:background="@drawable/button_background_dangerous_action"
         android:padding="20dp"
         android:textSize="20sp"
         android:layout_gravity="center"/>
@@ -47,7 +48,7 @@
         android:layout_marginTop="20dp"
         android:text="@string/btn_back"
         android:textStyle="bold|italic"
-        android:background="@drawable/button_background"
+        android:background="@drawable/button_background_cancel"
         android:padding="20dp"
         android:textSize="20sp"
         android:layout_gravity="center"/>
