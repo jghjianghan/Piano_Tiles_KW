@@ -254,6 +254,7 @@ class ClassicTileOrchestrator(
     }
 
     private fun internalStop(){
+        handler.disablePause()
         stopFlag = true
     }
 
