@@ -22,15 +22,16 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="GAME PAUSED"
+                android:text="@string/tv_pause_text"
                 android:layout_gravity="center"
                 android:textColor="@color/colorBlack"
+                android:textStyle="bold"
                 />
             <Button
                 android:id="@+id/btn_resume"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="resume"
+                android:text="@string/btn_resume_text"
                 android:layout_gravity="center"
                 android:background="@drawable/button_background"
                 android:layout_marginVertical="20dp"
@@ -40,7 +41,7 @@
                 android:id="@+id/btn_exit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="exit"
+                android:text="@string/btn_exit_string"
                 android:layout_gravity="center"
                 android:background="@drawable/button_background"
                 />

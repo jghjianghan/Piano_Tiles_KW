@@ -13,12 +13,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tv_score_value"
-
-        android:text="(SCORE)"
         android:textColor="@color/colorRed"
         android:textStyle="bold|italic"
         android:textSize="32sp"
-
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@android:dimen/app_icon_size"
         />
@@ -28,11 +25,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
-        android:text="| |"
+        android:text="@string/btn_pause_icon"
         android:textColor="@color/colorBlack"
         android:paddingHorizontal="10dp"
         android:paddingVertical="10dp"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:textStyle="bold"
         />
 
 
