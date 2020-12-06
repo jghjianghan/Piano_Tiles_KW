@@ -211,6 +211,7 @@ class ClassicTileOrchestrator(
                         dropper.drop()
                         tileClicked++
                         if(tileClicked == totalLine) {
+                            handler.disablePause()
                             dropper.finishFlag = true
                             dropper.drop()
                         }

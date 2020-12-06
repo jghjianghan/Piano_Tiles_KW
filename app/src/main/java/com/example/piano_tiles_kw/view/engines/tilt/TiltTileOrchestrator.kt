@@ -228,6 +228,7 @@ class TIltTileOrchestrator(
                     drawers.add(tile.getDrawer())
                 }
                 println("drawers: " + drawers.size)
+                drawers.add(CircleDrawer())
                 handler.redrawCanvas(drawers)
                 Thread.sleep(delay)
             }
@@ -269,6 +270,7 @@ class TIltTileOrchestrator(
     }
 
     private fun internalStop() {
+        handler.disablePause()
         stopFlag = true
     }
 

@@ -220,6 +220,7 @@ class RainingTileOrchestrator(
     }
 
     private fun internalStop(){
+        handler.disablePause()
         stopFlag = true
     }
     fun stop(){

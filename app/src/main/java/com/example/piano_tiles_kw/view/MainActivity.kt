@@ -70,7 +70,9 @@ class MainActivity : AppCompatActivity(), FragmentListener {
 
     override fun onBackPressed() {
         when(page){
-            Page.GAMEPLAY -> {/*Pause?*/}
+            Page.GAMEPLAY -> {
+                gameplayFragment.showPauseDialog()
+            }
             Page.RESULT -> changePage(Page.MENU)
             else -> super.onBackPressed()
         }

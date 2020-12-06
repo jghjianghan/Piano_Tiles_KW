@@ -255,6 +255,7 @@ class ArcadeTileOrchestrator(
     }
 
     private fun internalStop(){
+        handler.disablePause()
         stopFlag = true
     }
 

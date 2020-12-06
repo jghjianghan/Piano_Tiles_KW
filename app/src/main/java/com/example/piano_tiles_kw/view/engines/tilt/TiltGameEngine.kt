@@ -31,7 +31,7 @@ class TiltGameEngine(
     private val sensorData: SensorData,
     private var numberOfLanes: Int = 4
 ) : GameEngine(context, iv), View.OnTouchListener {
-    val handler = UIThreadWrapper(this, Looper.getMainLooper())
+    val handler = UIThreadWrapper(this, Looper.getMainLooper(),gameListener)
     val laneWidth = (iv.width.toFloat()) / numberOfLanes
     val laneCenters = ArrayList<Float>()
     val scoreTextSize = 24

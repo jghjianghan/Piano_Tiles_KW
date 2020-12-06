@@ -2,18 +2,20 @@ package com.example.piano_tiles_kw.view
 
 import android.app.Dialog
 import android.content.Context
+import android.content.DialogInterface
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Bundle
 import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.piano_tiles_kw.R
-import com.example.piano_tiles_kw.databinding.DialogPauseBinding
 import com.example.piano_tiles_kw.databinding.FragmentGameplayBinding
 import com.example.piano_tiles_kw.model.GameMode
 import com.example.piano_tiles_kw.model.Page
@@ -23,14 +25,13 @@ import com.example.piano_tiles_kw.view.engines.classic.ClassicGameEngine
 import com.example.piano_tiles_kw.view.engines.raining.RainingGameEngine
 import com.example.piano_tiles_kw.view.engines.tilt.TiltGameEngine
 import com.example.piano_tiles_kw.viewmodel.MainVM
-import kotlinx.android.synthetic.main.fragment_gameplay.*
+
 
 // Contains the game using canvas
 
 class GameplayFragment : SensorEventListener, Fragment(), GameEngine.GameListener, View.OnClickListener{
     private lateinit var listener: FragmentListener
     private lateinit var binding : FragmentGameplayBinding
-    private lateinit var bindingPauseDialog : DialogPauseBinding
     private lateinit var engine : GameEngine
     private lateinit var vm : MainVM
     private lateinit var gameMode: GameMode
@@ -40,6 +41,7 @@ class GameplayFragment : SensorEventListener, Fragment(), GameEngine.GameListene
     private lateinit var pauseDialog : Dialog
     private lateinit var btnResume : Button
     private lateinit var btnExit : Button
+    private var pauseable = true
 
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -67,7 +69,12 @@ class GameplayFragment : SensorEventListener, Fragment(), GameEngine.GameListene
                         engine = RainingGameEngine(requireActivity(), binding.ivCanvas, this)
                     }
                     GameMode.TILT -> {
-                        engine = TiltGameEngine(requireActivity(), binding.ivCanvas, this, sensorData)
+                        engine = TiltGameEngine(
+                            requireActivity(),
+                            binding.ivCanvas,
+                            this,
+                            sensorData
+                        )
                     }
                 }
                 engine.startGame()
@@ -79,6 +86,10 @@ class GameplayFragment : SensorEventListener, Fragment(), GameEngine.GameListene
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
         pauseDialog = Dialog(context as Context)
         pauseDialog.setContentView(R.layout.dialog_pause)
+
+        pauseDialog.setOnKeyListener(DialogInterface.OnKeyListener {_,_,_ -> true
+        })
+
         binding.btnPause.setOnClickListener(this)
 
 
@@ -100,7 +111,7 @@ class GameplayFragment : SensorEventListener, Fragment(), GameEngine.GameListene
 
     override fun onResume() {
         super.onResume()
-
+        pauseable = true
         if(gameMode == GameMode.TILT && accelerometer != null){
             sensorManager.registerListener(
                 this, accelerometer,
@@ -178,7 +189,7 @@ class GameplayFragment : SensorEventListener, Fragment(), GameEngine.GameListene
     }
 
     fun showPauseDialog() {
-        if(!engine.isStopped()) {
+        if(!engine.isStopped() && pauseable) {
             engine.pauseGame()
             btnResume = pauseDialog.findViewById(R.id.btn_resume)
             btnResume.setOnClickListener {
@@ -195,6 +206,10 @@ class GameplayFragment : SensorEventListener, Fragment(), GameEngine.GameListene
             pauseDialog.setCanceledOnTouchOutside(false)
             pauseDialog.show()
         }
+    }
+
+    override fun disablePause() {
+        pauseable = false
     }
 
     override fun onClick(v: View?) {

@@ -24,6 +24,7 @@ abstract class GameEngine (private val context: Context, private val iv: ImageVi
     interface GameListener {
         fun onEndGame()
         fun onScoreChanged(score: Number)
+        fun disablePause()
     }
 
     private val mBitmap: Bitmap = Bitmap.createBitmap(
