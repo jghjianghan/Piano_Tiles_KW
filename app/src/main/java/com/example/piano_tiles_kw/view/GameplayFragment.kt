@@ -73,19 +73,22 @@ class GameplayFragment : SensorEventListener, Fragment(), GameEngine.GameListene
     }
 
     override fun onSensorChanged(event: SensorEvent?) {
-        var sensorType = event!!.sensor.getType()
-        if(sensorType == Sensor.TYPE_ACCELEROMETER){
-            sensorData.sensorX = event.values[0]
+        if (gameMode == GameMode.TILT){
+            var sensorType = event!!.sensor.getType()
+            if(sensorType == Sensor.TYPE_ACCELEROMETER){
+                sensorData.sensorX = event.values[0]
+            }
         }
     }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
-        TODO("Not yet implemented")
+
     }
 
     override fun onResume() {
         super.onResume()
-        if(accelerometer != null){
+
+        if(gameMode == GameMode.TILT && accelerometer != null){
             sensorManager.registerListener(
                 this, accelerometer,
                 SensorManager.SENSOR_DELAY_GAME
@@ -95,7 +98,9 @@ class GameplayFragment : SensorEventListener, Fragment(), GameEngine.GameListene
 
     override fun onPause() {
         super.onPause()
-        sensorManager.unregisterListener(this)
+        if (gameMode == GameMode.TILT){
+            sensorManager.unregisterListener(this)
+        }
     }
 
     override fun onAttach(context: Context) {
