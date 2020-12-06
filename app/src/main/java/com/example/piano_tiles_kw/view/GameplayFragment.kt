@@ -116,11 +116,7 @@ class GameplayFragment : SensorEventListener, Fragment(), GameEngine.GameListene
             sensorManager.unregisterListener(this)
         }
 
-        if(!engine.isStopped()) {
-            showPauseDialog()
-        }
-
-
+        showPauseDialog()
     }
 
     override fun onAttach(context: Context) {
@@ -182,21 +178,23 @@ class GameplayFragment : SensorEventListener, Fragment(), GameEngine.GameListene
     }
 
     fun showPauseDialog() {
-        engine.pauseGame()
-        btnResume = pauseDialog.findViewById(R.id.btn_resume)
-        btnResume.setOnClickListener {
-            engine.resumeGame()
-            pauseDialog.dismiss()
-        }
+        if(!engine.isStopped()) {
+            engine.pauseGame()
+            btnResume = pauseDialog.findViewById(R.id.btn_resume)
+            btnResume.setOnClickListener {
+                engine.resumeGame()
+                pauseDialog.dismiss()
+            }
 
-        btnExit = pauseDialog.findViewById(R.id.btn_exit)
-        btnExit.setOnClickListener {
-            engine.stopGame()
-            listener.changePage(Page.MENU)
-            pauseDialog.dismiss()
+            btnExit = pauseDialog.findViewById(R.id.btn_exit)
+            btnExit.setOnClickListener {
+                engine.stopGame()
+                listener.changePage(Page.MENU)
+                pauseDialog.dismiss()
+            }
+            pauseDialog.setCanceledOnTouchOutside(false)
+            pauseDialog.show()
         }
-        pauseDialog.setCanceledOnTouchOutside(false)
-        pauseDialog.show()
     }
 
     override fun onClick(v: View?) {
