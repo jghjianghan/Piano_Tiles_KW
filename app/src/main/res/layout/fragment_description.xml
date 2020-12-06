@@ -40,7 +40,7 @@
 
     <Button
         android:id="@+id/btn_start"
-        android:layout_width="160dp"
+        android:layout_width="140dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
         android:background="@drawable/button_background_agree"
@@ -53,7 +53,7 @@
 
     <Button
         android:id="@+id/btn_cancel"
-        android:layout_width="160dp"
+        android:layout_width="140dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
         android:background="@drawable/button_background_cancel"
