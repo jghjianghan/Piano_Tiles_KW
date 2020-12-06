@@ -130,4 +130,8 @@ class ClassicGameEngine(
     }
 
     override fun getScore(): Number = orchestrator.getScore()
+
+    override fun isStopped(): Boolean {
+        return isOver
+    }
 }

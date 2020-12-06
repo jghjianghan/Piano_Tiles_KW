@@ -179,7 +179,7 @@ class RainingTileOrchestrator(
     }
 
     override fun handleTouch(x: Float, y: Float) {
-        if (!stopFlag){
+        if (!stopFlag && !pauseFlag){
             val iter = tiles.iterator()
             var onTileTouch = false
             while (iter.hasNext()){

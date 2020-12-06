@@ -115,8 +115,12 @@ class GameplayFragment : SensorEventListener, Fragment(), GameEngine.GameListene
         if (gameMode == GameMode.TILT){
             sensorManager.unregisterListener(this)
         }
-        engine.pauseGame()
-//        pauseDialog.show()
+
+        if(!engine.isStopped()) {
+            showPauseDialog()
+        }
+
+
     }
 
     override fun onAttach(context: Context) {

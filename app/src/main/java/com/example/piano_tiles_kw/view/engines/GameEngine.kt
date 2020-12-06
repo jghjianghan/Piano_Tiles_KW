@@ -62,6 +62,7 @@ abstract class GameEngine (private val context: Context, private val iv: ImageVi
     abstract fun stopGame()
     abstract fun pauseGame()
     abstract fun resumeGame()
+    abstract fun isStopped(): Boolean
 
     abstract fun getScore(): Number
 }

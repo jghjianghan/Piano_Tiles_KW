@@ -102,6 +102,10 @@ class ArcadeGameEngine(
         orchestrator.resume()
     }
 
+    override fun isStopped(): Boolean {
+        return isOver
+    }
+
     override fun onTouch(v: View?, event: MotionEvent?): Boolean {
         if (!isOver) {
             val pointerIndex = event!!.actionIndex
