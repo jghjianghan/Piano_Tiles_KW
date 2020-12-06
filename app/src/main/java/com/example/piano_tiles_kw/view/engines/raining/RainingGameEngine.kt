@@ -40,7 +40,7 @@ class RainingGameEngine(
         laneCenters,
         laneWidth,
         1000,
-        8f,
+        15f,
         iv.height.toFloat(),
         Color.BLACK,
         pianoPlayer = PianoPlayer(context, Song.values().random())

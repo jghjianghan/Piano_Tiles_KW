@@ -87,13 +87,4 @@ class MenuFragment : Fragment(),
             }
         }
     }
-    companion object {
-        fun newInstance(title: String?): MenuFragment {
-            val fragment = MenuFragment()
-            val args = Bundle()
-            args.putString("title", title)
-            fragment.arguments = args
-            return fragment
-        }
-    }
 }

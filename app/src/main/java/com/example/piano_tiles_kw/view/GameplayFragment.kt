@@ -110,20 +110,10 @@ class GameplayFragment : SensorEventListener, Fragment(), GameEngine.GameListene
         }
     }
 
-
-    companion object {
-        fun newInstance(title: String?): GameplayFragment {
-            val fragment = GameplayFragment()
-            val args = Bundle()
-            args.putString("title", title)
-            fragment.arguments = args
-            return fragment
-        }
-    }
-
     override fun onScoreChanged(score: Number) {
         binding.tvScoreValue.text = score.toString()
     }
+
     override fun onEndGame() {
         Log.d("raining end game", "-")
         when(this.gameMode){
@@ -165,6 +155,4 @@ class GameplayFragment : SensorEventListener, Fragment(), GameEngine.GameListene
 
         listener.changePage(Page.RESULT)
     }
-
-
 }

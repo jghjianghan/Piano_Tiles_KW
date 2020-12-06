@@ -3,7 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorPrimary"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -41,31 +40,28 @@
 
     <Button
         android:id="@+id/btn_start"
-        android:layout_width="0dp"
+        android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
+        android:background="@drawable/button_background_agree"
         android:padding="20dp"
         android:text="@string/btn_start_string"
+        android:textSize="18sp"
         android:textStyle="bold|italic"
-        android:background="@drawable/button_background_agree"
-        android:textSize="15sp"
-        app:layout_constraintEnd_toStartOf="@+id/title"
         app:layout_constraintStart_toStartOf="@+id/tv_description"
         app:layout_constraintTop_toBottomOf="@+id/tv_description" />
 
     <Button
         android:id="@+id/btn_cancel"
-        android:layout_width="0dp"
+        android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
+        android:background="@drawable/button_background_cancel"
         android:padding="20dp"
         android:text="@string/btn_cancel_string"
+        android:textSize="18sp"
         android:textStyle="bold|italic"
-        android:background="@drawable/button_background_cancel"
-        android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="@+id/tv_description"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/title"
         app:layout_constraintTop_toBottomOf="@+id/tv_description" />
 
     <ImageView

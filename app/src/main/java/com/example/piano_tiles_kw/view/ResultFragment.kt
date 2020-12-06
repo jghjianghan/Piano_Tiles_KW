@@ -102,14 +102,4 @@ class ResultFragment : Fragment(),
             listener.changePage(Page.MENU)
         }
     }
-
-    companion object {
-        fun newInstance(title: String?): ResultFragment {
-            val fragment = ResultFragment()
-            val args = Bundle()
-            args.putString("title", title)
-            fragment.arguments = args
-            return fragment
-        }
-    }
 }

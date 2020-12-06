@@ -3,18 +3,13 @@ package com.example.piano_tiles_kw.view.engines.tilt
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.hardware.Sensor
-import android.hardware.SensorEvent
-import android.hardware.SensorEventListener
 import android.util.Log
 import com.example.piano_tiles_kw.model.audio.PianoPlayer
 import com.example.piano_tiles_kw.view.SensorData
 import com.example.piano_tiles_kw.view.UIThreadWrapper
-import com.example.piano_tiles_kw.view.engines.CircularFalseMark
 import com.example.piano_tiles_kw.view.engines.TileDrawer
 import com.example.piano_tiles_kw.view.engines.TileOrchestrator
 import com.example.piano_tiles_kw.view.engines.raining.RainingTile
-import java.util.*
 import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.ThreadLocalRandom
 import kotlin.collections.ArrayList
@@ -92,24 +87,7 @@ class TIltTileOrchestrator(
                         tileColor
                     )
                 )
-                if (ThreadLocalRandom.current().nextDouble() < 0.1) {//double spawn
-                    do {
-                        center = laneCenters.random()
-                    } while (center == prevCenter)
-                    prevCenter = center
-                    tileSpeed = (ThreadLocalRandom.current()
-                        .nextFloat() - 0.5f) * speedDeviationFactor + dropSpeed
-                    tiles.add(
-                        RainingTile(
-                            tileWidth,
-                            tileHeight,
-                            center,
-                            envHeight,
-                            tileSpeed,
-                            tileColor
-                        )
-                    )
-                }
+
                 speedUpCounter++
                 sleep(delay)
                 Log.d("spawner", delay.toString())
@@ -126,17 +104,23 @@ class TIltTileOrchestrator(
     private inner class Puller : Thread() {
         private var delay: Long = 20
         var stopFlag = false
+        var maxSpeed = 50f
+
         override fun run() {
             while (!stopFlag) {
+                var speed = ((sensorData.sensorX / 9.81) * maxSpeed).toFloat()
+                //moving right
                 if (sensorData.sensorX < 0) {
                     if(circleX + circleRadius + 15f < envWidth){
-                        circleX += 15f
+                        circleX -= speed
                     } else {
                         circleX = envWidth-circleRadius
                     }
-                } else if (sensorData.sensorX > 0 ) {
+                }
+                //moving left
+                else if (sensorData.sensorX > 0 ) {
                     if(circleX - circleRadius - 15f > 0){
-                        circleX -= 15f
+                        circleX -= speed
                     } else {
                         circleX = circleRadius
                     }
@@ -175,7 +159,7 @@ class TIltTileOrchestrator(
                 drawers.add(CircleDrawer())
                 handler.redrawCanvas(drawers)
                 sleep(delay)
-//                Log.d("sensorData", sensorData.sensorX.toString())
+                Log.d("sensorData", sensorData.sensorX.toString())
             }
         }
 
@@ -209,7 +193,7 @@ class TIltTileOrchestrator(
 
     private inner class Speeder(
         private val interval: Long = 13000,
-        private val speedUpValue: Float = dropSpeed * 0.12f,
+        private val speedUpValue: Float = dropSpeed * 0.3f, //default 0.12f
     ) : Thread() {
         var stopFlag = false
         override fun run() {

@@ -43,7 +43,7 @@ class TiltGameEngine(
         laneCenters,
         laneWidth,
         1000,
-        8f,
+        15f,
         iv.height.toFloat(),
         iv.width.toFloat(),
         Color.BLACK,

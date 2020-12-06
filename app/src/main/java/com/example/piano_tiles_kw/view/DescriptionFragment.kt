@@ -77,14 +77,4 @@ class DescriptionFragment : Fragment(),
             listener.changePage(Page.MENU)
         }
     }
-
-    companion object {
-        fun newInstance(title: String?): DescriptionFragment {
-            val fragment = DescriptionFragment()
-            val args = Bundle()
-            args.putString("title", title)
-            fragment.arguments = args
-            return fragment
-        }
-    }
 }

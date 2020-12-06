@@ -49,7 +49,7 @@ class RainingTileOrchestrator(
         private val tileColor: Int
     ): Thread() {
         var stopFlag = false
-        private val speedUpValue: Float = delay * .08f
+        private val speedUpValue: Float = delay * 0.3f
         private val minimumDelay = 300
         private val speedUpIteration = 15
         private var speedUpCounter = 0
