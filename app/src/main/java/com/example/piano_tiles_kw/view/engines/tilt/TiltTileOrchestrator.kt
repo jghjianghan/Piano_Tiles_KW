@@ -39,7 +39,8 @@ class TIltTileOrchestrator(
     private var circleRadius = 80.0f
     private var circleX = envWidth / 2
     private var circleY = envHeight-circleRadius-15f
-
+    private var pauseFlag = false
+    private var stopFlag = false
 
     override fun getScore(): Number = score
 
@@ -58,7 +59,6 @@ class TIltTileOrchestrator(
         private val envHeight: Float,
         private val tileColor: Int
     ) : Thread() {
-        var stopFlag = false
         private val speedUpValue: Float = delay * .08f
         private val minimumDelay = 300
         private val speedUpIteration = 15
@@ -67,99 +67,104 @@ class TIltTileOrchestrator(
         override fun run() {
             Log.d("missed", envHeight.toString())
             while (!stopFlag) {
-                var tileSpeed = (ThreadLocalRandom.current()
-                    .nextFloat() - 0.5f) * speedDeviationFactor + dropSpeed
-                Log.d("missed", envHeight.toString())
-                Log.d("missed dropSpeed", dropSpeed.toString())
-                Log.d("missed Tilespeed", tileSpeed.toString())
-                var center: Float = 0f
-                do {
-                    center = laneCenters.random()
-                } while (center == prevCenter)
-                prevCenter = center
-                tiles.add(
-                    RainingTile(
-                        tileWidth,
-                        tileHeight,
-                        center,
-                        envHeight,
-                        tileSpeed,
-                        tileColor
+                if(!pauseFlag) {
+                    var tileSpeed = (ThreadLocalRandom.current()
+                        .nextFloat() - 0.5f) * speedDeviationFactor + dropSpeed
+                    Log.d("missed", envHeight.toString())
+                    Log.d("missed dropSpeed", dropSpeed.toString())
+                    Log.d("missed Tilespeed", tileSpeed.toString())
+                    var center: Float = 0f
+                    do {
+                        center = laneCenters.random()
+                    } while (center == prevCenter)
+                    prevCenter = center
+                    tiles.add(
+                        RainingTile(
+                            tileWidth,
+                            tileHeight,
+                            center,
+                            envHeight,
+                            tileSpeed,
+                            tileColor
+                        )
                     )
-                )
 
-                speedUpCounter++
-                sleep(delay)
-                Log.d("spawner", delay.toString())
-                if (speedUpCounter == speedUpIteration) {
-                    speedUpCounter = 0
-                    delay = if (delay - speedUpValue >= minimumDelay) {
-                        (delay - speedUpValue).toLong()
-                    } else minimumDelay.toLong()
+                    speedUpCounter++
+                    sleep(delay)
+                    Log.d("spawner", delay.toString())
+                    if (speedUpCounter == speedUpIteration) {
+                        speedUpCounter = 0
+                        delay = if (delay - speedUpValue >= minimumDelay) {
+                            (delay - speedUpValue).toLong()
+                        } else minimumDelay.toLong()
+                    }
                 }
+
             }
         }
     }
 
     private inner class Puller : Thread() {
         private var delay: Long = 20
-        var stopFlag = false
         var maxSpeed = 50f
 
         override fun run() {
             while (!stopFlag) {
-                var speed = ((sensorData.sensorX / 9.81) * maxSpeed).toFloat()
-                //moving right
-                if (sensorData.sensorX < 0) {
-                    if(circleX + circleRadius + 15f < envWidth){
-                        circleX -= speed
-                    } else {
-                        circleX = envWidth-circleRadius
-                    }
-                }
-                //moving left
-                else if (sensorData.sensorX > 0 ) {
-                    if(circleX - circleRadius - 15f > 0){
-                        circleX -= speed
-                    } else {
-                        circleX = circleRadius
-                    }
-                }
-                val drawers = ArrayList<TileDrawer>()
-                val outTiles = ArrayList<RainingTile>()
-                val iter = tiles.iterator()
-                var missedTile = false
-                while (iter.hasNext()) {
-                    val tile = iter.next()
-                    tile.drop()
-
-                    if (tile.isClickable && isCircleTouchTile(tile.cx, tile.cy + tileHeight/2, tile.width, tileHeight)) {
-                        tile.onClick()
-                        score++
-                        pianoPlayer?.playNext()
-                    }
-
-                    drawers.add(tile.Drawer())
-                    if (tile.isOut) {
-                        if (!missedTile && tile.isClickable) {
-                            Log.d("missed", tile.cx.toString() + " " + tile.cy.toString())
-                            missedTile = true
-                            tile.onMissed()
+                if(!pauseFlag) {
+                    var speed = ((sensorData.sensorX / 9.81) * maxSpeed).toFloat()
+                    //moving right
+                    if (sensorData.sensorX < 0) {
+                        if(circleX + circleRadius + 15f < envWidth){
+                            circleX -= speed
+                        } else {
+                            circleX = envWidth-circleRadius
                         }
-                        outTiles.add(tile)
                     }
+                    //moving left
+                    else if (sensorData.sensorX > 0 ) {
+                        if(circleX - circleRadius - 15f > 0){
+                            circleX -= speed
+                        } else {
+                            circleX = circleRadius
+                        }
+                    }
+                    val drawers = ArrayList<TileDrawer>()
+                    val outTiles = ArrayList<RainingTile>()
+                    val iter = tiles.iterator()
+                    var missedTile = false
+                    while (iter.hasNext()) {
+                        val tile = iter.next()
+                        tile.drop()
+
+                        if (tile.isClickable && isCircleTouchTile(tile.cx, tile.cy + tileHeight/2, tile.width, tileHeight)) {
+                            tile.onClick()
+                            score++
+                            pianoPlayer?.playNext()
+                        }
+
+                        drawers.add(tile.Drawer())
+                        if (tile.isOut) {
+                            if (!missedTile && tile.isClickable) {
+                                Log.d("missed", tile.cx.toString() + " " + tile.cy.toString())
+                                missedTile = true
+                                tile.onMissed()
+                            }
+                            outTiles.add(tile)
+                        }
+                    }
+
+                    if (missedTile) {
+                        missedMechanism()
+                        return
+                    }
+
+                    tiles.removeAll(outTiles)
+                    drawers.add(CircleDrawer())
+                    handler.redrawCanvas(drawers)
+                    sleep(delay)
+                    Log.d("sensorData", sensorData.sensorX.toString())
                 }
 
-                if (missedTile) {
-                    missedMechanism()
-                    return
-                }
-
-                tiles.removeAll(outTiles)
-                drawers.add(CircleDrawer())
-                handler.redrawCanvas(drawers)
-                sleep(delay)
-                Log.d("sensorData", sensorData.sensorX.toString())
             }
         }
 
@@ -195,12 +200,13 @@ class TIltTileOrchestrator(
         private val interval: Long = 13000,
         private val speedUpValue: Float = dropSpeed * 0.3f, //default 0.12f
     ) : Thread() {
-        var stopFlag = false
         override fun run() {
             Log.d("speedup", dropSpeed.toString())
             while (!stopFlag) {
-                sleep(interval)
-                dropSpeed += speedUpValue
+                if(!pauseFlag) {
+                    sleep(interval)
+                    if(!pauseFlag) dropSpeed += speedUpValue
+                }
             }
         }
     }
@@ -251,11 +257,11 @@ class TIltTileOrchestrator(
     }
 
     fun pause() {
-        TODO("Yet to be implemented")
+        pauseFlag = true
     }
 
     fun resume() {
-        TODO("Yet to be implemented")
+        pauseFlag = false
     }
 
     override fun handleTouch(x: Float, y: Float) {
@@ -263,9 +269,7 @@ class TIltTileOrchestrator(
     }
 
     private fun internalStop() {
-        spawner.stopFlag = true
-        puller.stopFlag = true
-        speeder.stopFlag = true
+        stopFlag = true
     }
 
     fun stop() {

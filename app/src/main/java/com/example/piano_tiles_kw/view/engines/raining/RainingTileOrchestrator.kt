@@ -30,6 +30,8 @@ class RainingTileOrchestrator(
     var tileHeight = 1.8f * tileWidth
     private val missed = MissedAnimation(tileHeight, 10, 20)
     private var score = 0
+    private var pauseFlag = false
+    private var stopFlag = false
 
     override fun getScore(): Number = score
 
@@ -38,7 +40,6 @@ class RainingTileOrchestrator(
         spawner.start()
         puller.start()
         speeder.start()
-
     }
 
     private inner class Spawner(
@@ -48,7 +49,6 @@ class RainingTileOrchestrator(
         private val envHeight: Float,
         private val tileColor: Int
     ): Thread() {
-        var stopFlag = false
         private val speedUpValue: Float = delay * 0.3f
         private val minimumDelay = 300
         private val speedUpIteration = 15
@@ -57,66 +57,69 @@ class RainingTileOrchestrator(
         override fun run() {
             Log.d("missed", envHeight.toString())
             while (!stopFlag){
-                var tileSpeed = (ThreadLocalRandom.current().nextFloat() - 0.5f) * speedDeviationFactor + dropSpeed
-                Log.d("missed", envHeight.toString())
-                Log.d("missed dropSpeed", dropSpeed.toString())
-                Log.d("missed Tilespeed", tileSpeed.toString())
-                var center: Float = 0f
-                do {
-                    center = laneCenters.random()
-                } while (center == prevCenter)
-                prevCenter = center
-                tiles.add(RainingTile(tileWidth, tileHeight, center, envHeight, tileSpeed, tileColor))
-                if (ThreadLocalRandom.current().nextDouble() < 0.1){//double spawn
+                if(!pauseFlag) {
+                    var tileSpeed = (ThreadLocalRandom.current().nextFloat() - 0.5f) * speedDeviationFactor + dropSpeed
+                    Log.d("missed", envHeight.toString())
+                    Log.d("missed dropSpeed", dropSpeed.toString())
+                    Log.d("missed Tilespeed", tileSpeed.toString())
+                    var center: Float = 0f
                     do {
                         center = laneCenters.random()
                     } while (center == prevCenter)
                     prevCenter = center
-                    tileSpeed = (ThreadLocalRandom.current().nextFloat() - 0.5f) * speedDeviationFactor + dropSpeed
                     tiles.add(RainingTile(tileWidth, tileHeight, center, envHeight, tileSpeed, tileColor))
-                }
-                speedUpCounter++
-                sleep(delay)
-                Log.d("spawner", delay.toString())
-                if (speedUpCounter == speedUpIteration){
-                    speedUpCounter = 0
-                    delay = if (delay-speedUpValue >= minimumDelay){
-                        (delay-speedUpValue).toLong()
-                    } else minimumDelay.toLong()
+                    if (ThreadLocalRandom.current().nextDouble() < 0.1){//double spawn
+                        do {
+                            center = laneCenters.random()
+                        } while (center == prevCenter)
+                        prevCenter = center
+                        tileSpeed = (ThreadLocalRandom.current().nextFloat() - 0.5f) * speedDeviationFactor + dropSpeed
+                        tiles.add(RainingTile(tileWidth, tileHeight, center, envHeight, tileSpeed, tileColor))
+                    }
+                    speedUpCounter++
+                    sleep(delay)
+                    Log.d("spawner", delay.toString())
+                    if (speedUpCounter == speedUpIteration){
+                        speedUpCounter = 0
+                        delay = if (delay-speedUpValue >= minimumDelay){
+                            (delay-speedUpValue).toLong()
+                        } else minimumDelay.toLong()
+                    }
                 }
             }
         }
     }
     private inner class Puller: Thread() {
         private var delay: Long = 20
-        var stopFlag = false
         override fun run() {
             while (!stopFlag){
-                val drawers = ArrayList<TileDrawer>()
-                val outTiles = ArrayList<RainingTile>()
-                val iter = tiles.iterator()
-                var missedTile = false
-                while (iter.hasNext()){
-                    val tile = iter.next()
-                    tile.drop()
-                    drawers.add(tile.Drawer())
-                    if (tile.isOut){
-                        if (!missedTile && tile.isClickable){
-                            Log.d("missed",tile.cx.toString() + " " + tile.cy.toString())
-                            missedTile = true
-                            tile.onMissed()
+                if(!pauseFlag) {
+                    val drawers = ArrayList<TileDrawer>()
+                    val outTiles = ArrayList<RainingTile>()
+                    val iter = tiles.iterator()
+                    var missedTile = false
+                    while (iter.hasNext()){
+                        val tile = iter.next()
+                        tile.drop()
+                        drawers.add(tile.Drawer())
+                        if (tile.isOut){
+                            if (!missedTile && tile.isClickable){
+                                Log.d("missed",tile.cx.toString() + " " + tile.cy.toString())
+                                missedTile = true
+                                tile.onMissed()
+                            }
+                            outTiles.add(tile)
                         }
-                        outTiles.add(tile)
                     }
-                }
 
-                if (missedTile){
-                    missedMechanism()
-                    return
+                    if (missedTile){
+                        missedMechanism()
+                        return
+                    }
+                    tiles.removeAll(outTiles)
+                    handler.redrawCanvas(drawers)
+                    sleep(delay)
                 }
-                tiles.removeAll(outTiles)
-                handler.redrawCanvas(drawers)
-                sleep(delay)
             }
         }
     }
@@ -125,12 +128,13 @@ class RainingTileOrchestrator(
         private val interval: Long = 13000,
         private val speedUpValue: Float = dropSpeed * 0.12f,
     ): Thread() {
-        var stopFlag = false
         override fun run() {
             Log.d("speedup", dropSpeed.toString())
             while (!stopFlag){
-                sleep(interval)
-                dropSpeed += speedUpValue
+                if(!pauseFlag) {
+                    sleep(interval)
+                    if(!pauseFlag) dropSpeed += speedUpValue
+                }
             }
         }
     }
@@ -167,15 +171,15 @@ class RainingTileOrchestrator(
     }
 
     fun pause(){
-        TODO("Yet to be implemented")
+        pauseFlag = true
     }
 
     fun resume(){
-        TODO("Yet to be implemented")
+        pauseFlag = false
     }
 
     override fun handleTouch(x: Float, y: Float) {
-        if (!puller.stopFlag){
+        if (!stopFlag){
             val iter = tiles.iterator()
             var onTileTouch = false
             while (iter.hasNext()){
@@ -216,9 +220,7 @@ class RainingTileOrchestrator(
     }
 
     private fun internalStop(){
-        spawner.stopFlag = true
-        puller.stopFlag = true
-        speeder.stopFlag = true
+        stopFlag = true
     }
     fun stop(){
         internalStop()

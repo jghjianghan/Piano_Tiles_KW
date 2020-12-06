@@ -31,6 +31,8 @@ class ArcadeTileOrchestrator(
     private var isStarted = false
     private var step = tileHeight/15
     private val speeder = Speeder()
+    private var pauseFlag = false
+    private var stopFlag = false
 
     init {
         var currHeight = -tileHeight
@@ -108,10 +110,6 @@ class ArcadeTileOrchestrator(
     private inner class Dropper(
         private val delay: Long
     ) : Thread() {
-        var stopFlag = false
-        var pauseFlag = false
-
-
         override fun run() {
             while(!stopFlag) {
                 if(!pauseFlag) {
@@ -151,24 +149,27 @@ class ArcadeTileOrchestrator(
         private val interval: Long = 10000,
         private val speedIncrement: Float = 1.2f
     ): Thread() {
-        var stopFlag = false
         override fun run() {
 
             while (!stopFlag){
-                sleep(interval)
-                step += speedIncrement
+                if(!pauseFlag) {
+                    sleep(interval)
+                    if(!pauseFlag) step += speedIncrement
+                }
             }
         }
     }
 
     fun pause(){
+        pauseFlag = true
     }
 
     fun resume(){
+        pauseFlag = false
     }
 
     override fun handleTouch(x: Float, y: Float) {
-        if (!dropper.stopFlag && !dropper.pauseFlag){
+        if (!stopFlag && !pauseFlag){
             val iter = tiles.iterator()
             while (iter.hasNext()){
                 val tile = iter.next()
@@ -254,7 +255,7 @@ class ArcadeTileOrchestrator(
     }
 
     private fun internalStop(){
-        dropper.stopFlag = true
+        stopFlag = true
     }
 
     fun stop(){

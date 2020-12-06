@@ -26,11 +26,16 @@ class ClassicTileOrchestrator(
     private val spawner = Spawner()
     private val laneHeightCenters = ArrayList<Float>() // index 0 di atas luar layar
     private var score = 0f
+    private var tempScore = 0f
     private var tileClicked = 0
     private var startTime : Long = 0
     private var endTime : Long = 0
     private var startPauseTime : Long = 0
     private var stopPauseTime : Long = 0
+    private var pauseFlag = false
+    private var stopFlag = false
+    private var isStarted = false
+
 
 
     init {
@@ -44,7 +49,6 @@ class ClassicTileOrchestrator(
     fun start() {
         println("orchestrator starting")
         spawner.start()
-        dropper.start()
     }
 
     override fun getScore(): Number = score
@@ -128,8 +132,6 @@ class ClassicTileOrchestrator(
         private val iterationPerTile: Int,
         private val delay: Long
     ) : Thread() {
-        var stopFlag = false
-        var pauseFlag = false
         var finishFlag = false
 
         private var totalIteration = 0
@@ -148,7 +150,7 @@ class ClassicTileOrchestrator(
                     score = 1f * (endTime - startTime) / 1000
                     if(iteration < totalIteration) {
                         drawers = ArrayList()
-                        if(tiles[tiles.size - 1].cy >= laneHeightCenters[1]) {
+                        if(tiles[tiles.size - 1].cy + tileHeight >= 0) {
                             spawner.spawn(tiles[tiles.size-1].cy)
                         }
                         for (tile in tiles){
@@ -180,21 +182,30 @@ class ClassicTileOrchestrator(
 
 
     fun pause(){
+        pauseFlag = true
         startPauseTime = System.currentTimeMillis()
+        tempScore = score
+        score = Float.MAX_VALUE
     }
 
     fun resume(){
         stopPauseTime = System.currentTimeMillis()
+        score = tempScore
         startTime += stopPauseTime-startPauseTime
+        pauseFlag = false
     }
 
     override fun handleTouch(x: Float, y: Float) {
-        if (!dropper.stopFlag && !dropper.pauseFlag){
+        if (!stopFlag && !pauseFlag){
             val iter = tiles.iterator()
             while (iter.hasNext()){
                 val tile = iter.next()
                 if(tile.isClickable) {
                     if (tile.isTileTouched(x, y)){
+                        if(!isStarted) {
+                            isStarted = true
+                            dropper.start()
+                        }
                         pianoPlayer?.playNext()
                         tile.onClick()
                         dropper.drop()
@@ -242,7 +253,7 @@ class ClassicTileOrchestrator(
     }
 
     private fun internalStop(){
-        dropper.stopFlag = true
+        stopFlag = true
     }
 
     fun stop(){

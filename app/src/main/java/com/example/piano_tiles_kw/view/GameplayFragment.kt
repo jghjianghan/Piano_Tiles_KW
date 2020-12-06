@@ -1,5 +1,6 @@
 package com.example.piano_tiles_kw.view
 
+import android.app.Dialog
 import android.content.Context
 import android.hardware.Sensor
 import android.hardware.SensorEvent
@@ -8,8 +9,11 @@ import android.hardware.SensorManager
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.piano_tiles_kw.R
+import com.example.piano_tiles_kw.databinding.DialogPauseBinding
 import com.example.piano_tiles_kw.databinding.FragmentGameplayBinding
 import com.example.piano_tiles_kw.model.GameMode
 import com.example.piano_tiles_kw.model.Page
@@ -19,18 +23,23 @@ import com.example.piano_tiles_kw.view.engines.classic.ClassicGameEngine
 import com.example.piano_tiles_kw.view.engines.raining.RainingGameEngine
 import com.example.piano_tiles_kw.view.engines.tilt.TiltGameEngine
 import com.example.piano_tiles_kw.viewmodel.MainVM
+import kotlinx.android.synthetic.main.fragment_gameplay.*
 
 // Contains the game using canvas
 
-class GameplayFragment : SensorEventListener, Fragment(), GameEngine.GameListener{
+class GameplayFragment : SensorEventListener, Fragment(), GameEngine.GameListener, View.OnClickListener{
     private lateinit var listener: FragmentListener
     private lateinit var binding : FragmentGameplayBinding
+    private lateinit var bindingPauseDialog : DialogPauseBinding
     private lateinit var engine : GameEngine
     private lateinit var vm : MainVM
     private lateinit var gameMode: GameMode
     private lateinit var sensorManager: SensorManager
-    private  var accelerometer: Sensor? = null
+    private var accelerometer: Sensor? = null
     private var sensorData: SensorData = SensorData()
+    private lateinit var pauseDialog : Dialog
+    private lateinit var btnResume : Button
+    private lateinit var btnExit : Button
 
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -68,6 +77,10 @@ class GameplayFragment : SensorEventListener, Fragment(), GameEngine.GameListene
 
         sensorManager = requireActivity().getSystemService(Context.SENSOR_SERVICE) as SensorManager
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+        pauseDialog = Dialog(context as Context)
+        pauseDialog.setContentView(R.layout.dialog_pause)
+        binding.btnPause.setOnClickListener(this)
+
 
         return binding.root
     }
@@ -94,6 +107,7 @@ class GameplayFragment : SensorEventListener, Fragment(), GameEngine.GameListene
                 SensorManager.SENSOR_DELAY_GAME
             )
         }
+
     }
 
     override fun onPause() {
@@ -101,6 +115,8 @@ class GameplayFragment : SensorEventListener, Fragment(), GameEngine.GameListene
         if (gameMode == GameMode.TILT){
             sensorManager.unregisterListener(this)
         }
+        engine.pauseGame()
+//        pauseDialog.show()
     }
 
     override fun onAttach(context: Context) {
@@ -159,5 +175,29 @@ class GameplayFragment : SensorEventListener, Fragment(), GameEngine.GameListene
         }
 
         listener.changePage(Page.RESULT)
+    }
+
+    fun showPauseDialog() {
+        engine.pauseGame()
+        btnResume = pauseDialog.findViewById(R.id.btn_resume)
+        btnResume.setOnClickListener {
+            engine.resumeGame()
+            pauseDialog.dismiss()
+        }
+
+        btnExit = pauseDialog.findViewById(R.id.btn_exit)
+        btnExit.setOnClickListener {
+            engine.stopGame()
+            listener.changePage(Page.MENU)
+            pauseDialog.dismiss()
+        }
+        pauseDialog.setCanceledOnTouchOutside(false)
+        pauseDialog.show()
+    }
+
+    override fun onClick(v: View?) {
+        if(v == binding.btnPause) {
+            showPauseDialog()
+        }
     }
 }

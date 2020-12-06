@@ -111,6 +111,14 @@ class RainingGameEngine(
         }
     }
 
+    override fun pauseGame() {
+        orchestrator.pause()
+    }
+
+    override fun resumeGame() {
+        orchestrator.resume()
+    }
+
     override fun onTouch(v: View?, event: MotionEvent?): Boolean {
         if (!isOver) {
             val pointerIndex = event!!.actionIndex
